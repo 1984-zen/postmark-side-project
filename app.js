@@ -1,7 +1,6 @@
 const express = require('express')
 const app = express()
 
-app.set('view engine', 'ejs')
 app.set('port', process.env.PORT || 3000)
 
 const memberRouter = require('./routes/members.js');
