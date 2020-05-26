@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize')
 const config = require('./config/development_config')
-const TestModel = require('./models/test')
+const UserModel = require('./ORMmodels/users')
 const sequelize = new Sequelize({database: config.mysql.database, username: config.mysql.user, password: config.mysql.password,
     host: config.mysql.host,
     dialect: 'mysql',
@@ -12,8 +12,8 @@ const sequelize = new Sequelize({database: config.mysql.database, username: conf
     }
   });
 
-const Test = TestModel(sequelize, Sequelize);
+const Users = UserModel(sequelize, Sequelize);
 
 module.exports = {
-    Test
+    Users
 }
