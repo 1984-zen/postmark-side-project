@@ -8,6 +8,7 @@ module.exports = (sequelize, type) => {
           type: type.STRING,
         },
         password: type.STRING,
+        api_token: type.STRING,
         update_time: type.STRING,
         create_time: type.STRING
     }, {timestamps: false})
