@@ -1,4 +1,4 @@
-const stampModelCreate = require('../models/stampModel');
+const { stampModelCreate, stampModelDelete } = require('../models/stampModel');
 const fs = require('fs');
 
 module.exports = class Stamp {
@@ -22,6 +22,22 @@ module.exports = class Stamp {
                     })
                 })
         })
+    }
+    deleteStamp(req, res, next) {
+        const deleteStampID = req.params.id;
+        stampModelDelete(deleteStampID)
+            .then(result => {
+                res.json({
+                    status: "delete successfully",
+                    result: result
+                })
+            })
+            .catch(err => {
+                res.json({
+                    status: "delete failed",
+                    result: err
+                })
+            })
     }
 }
 const onTime = () => {

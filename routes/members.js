@@ -33,5 +33,6 @@ const upload = multer({
 router.post('/register', registerController.postRegister);
 router.post('/login', loginController.postLogin);
 router.post('/stamps', verifyToken.tokenAuth, upload.single('image'), userStampsController.postStamp);
+router.delete('/stamps/:id', verifyToken.tokenAuth, userStampsController.deleteStamp);
 
 module.exports = router;
