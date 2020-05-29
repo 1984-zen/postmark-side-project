@@ -37,5 +37,6 @@ router.post('/login', loginController.postLogin);
 router.post('/stamps', verifyToken.tokenAuth, upload.single('image'), userStampsController.postStamp);
 router.delete('/stamps/:id', verifyToken.tokenAuth, userStampsController.deleteStamp);
 router.post('/posts', verifyToken.tokenAuth, upload.single('image'), userPostsController.postPost);
+router.delete('/posts/:id', verifyToken.tokenAuth, upload.single('image'), userPostsController.deletePost);
 
 module.exports = router;
