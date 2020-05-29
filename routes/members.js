@@ -8,7 +8,9 @@ const LoginController = require('../controllers/loginController');
 const loginController = new LoginController();
 const UserStampsController = require('../controllers/userStampsController');
 const userStampsController = new UserStampsController();
-const verifyToken = require('../models/verifyTokenModel')
+const verifyToken = require('../models/verifyTokenModel');
+const UserPostsController = require('../controllers/postController');
+const userPostsController = new UserPostsController();
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -34,5 +36,6 @@ router.post('/register', registerController.postRegister);
 router.post('/login', loginController.postLogin);
 router.post('/stamps', verifyToken.tokenAuth, upload.single('image'), userStampsController.postStamp);
 router.delete('/stamps/:id', verifyToken.tokenAuth, userStampsController.deleteStamp);
+router.post('/posts', verifyToken.tokenAuth, upload.single('image'), userPostsController.postPost);
 
 module.exports = router;
