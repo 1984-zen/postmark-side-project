@@ -1,4 +1,4 @@
-const { Posts } = require('../connection_db')
+const { Posts } = require('../connection_db');
 
 function postModelCreate(post) {
     return Posts.create(
@@ -32,7 +32,17 @@ async function postModelDelete(deletePostID) {
         }
     })
 }
+function postModelPut(putPostID, content) {
+    return Posts.update(
+        {
+            content: content
+        },
+        {
+            where: { id: putPostID }
+        }
+    )
+}
 
 module.exports = {
-    postModelCreate, postModelDelete
+    postModelCreate, postModelDelete, postModelPut
 }

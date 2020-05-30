@@ -1,11 +1,11 @@
-const { postModelCreate, postModelDelete } = require('../models/postModel');
-const { postImgModelCreate } = require('../models/postImgModel');
+const { postModelCreate, postModelDelete, postModelPut } = require('../models/postModel');
+const { postImgModelCreate, postImageModelPut } = require('../models/postImgModel');
 const fs = require('fs');
 
 module.exports = class Post {
     async postPost(req, res, next) {
         const post = {
-            imgPath: `/images/upload/${req.file.originalname}`,
+            imgPath: `/images/upload/${req.file.originalname}` || '',
             location_id: req.body.location_id,
             content: req.body.content,
             user_id: req.user.id,
@@ -37,6 +37,28 @@ module.exports = class Post {
                     result: err
                 })
             })
+    }
+    async putPost(req, res, next) {
+        const putPostID = req.post.id;
+        let imgPath = null;
+        if (req.file) {
+            imgPath = `/images/upload/${req.file.originalname}`
+            const newPath = `public/images/upload/${req.file.originalname}`;
+            fs.rename(req.file.path, newPath, async () => {
+                await postImageModelPut(putPostID, imgPath)
+            })
+        }
+        const content = req.body.content;
+        let result = {
+            post_id: putPostID,
+            content: content,
+            imgPath: imgPath
+        }
+        await postModelPut(putPostID, content)
+        res.json({
+            status: "update post successfully",
+            result: result
+        })
     }
 }
 const onTime = () => {

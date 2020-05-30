@@ -11,6 +11,7 @@ const userStampsController = new UserStampsController();
 const verifyToken = require('../models/verifyTokenModel');
 const UserPostsController = require('../controllers/postController');
 const userPostsController = new UserPostsController();
+const verifyPostAuth = require('../models/verifyPostAuthModel');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -38,5 +39,6 @@ router.post('/stamps', verifyToken.tokenAuth, upload.single('image'), userStamps
 router.delete('/stamps/:id', verifyToken.tokenAuth, userStampsController.deleteStamp);
 router.post('/posts', verifyToken.tokenAuth, upload.single('image'), userPostsController.postPost);
 router.delete('/posts/:id', verifyToken.tokenAuth, upload.single('image'), userPostsController.deletePost);
+router.put('/posts/:id', verifyToken.tokenAuth, verifyPostAuth.verifyPostAuth, upload.single('image'), userPostsController.putPost);
 
 module.exports = router;
