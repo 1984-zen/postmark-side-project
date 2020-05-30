@@ -11,6 +11,8 @@ const userStampsController = new UserStampsController();
 const verifyToken = require('../models/verifyTokenModel');
 const UserPostsController = require('../controllers/postController');
 const userPostsController = new UserPostsController();
+const IndexConstroller = require('../controllers/indexController');
+const indexConstroller = new IndexConstroller();
 const verifyPostAuth = require('../models/verifyPostAuthModel');
 
 const storage = multer.diskStorage({
@@ -40,5 +42,6 @@ router.delete('/stamps/:id', verifyToken.tokenAuth, userStampsController.deleteS
 router.post('/posts', verifyToken.tokenAuth, upload.single('image'), userPostsController.postPost);
 router.delete('/posts/:id', verifyToken.tokenAuth, upload.single('image'), userPostsController.deletePost);
 router.put('/posts/:id', verifyToken.tokenAuth, verifyPostAuth.verifyPostAuth, upload.single('image'), userPostsController.putPost);
+router.get('/index', indexConstroller.showCities);
 
 module.exports = router;
