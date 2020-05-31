@@ -15,7 +15,20 @@ async function stampList(cityID) {
         ]
     })
 }
+async function locationsModelCreate(location) {
+    let result = {};
+    result.message = `create location successfully`;
+    result.result = location;
+    await Locations.create({
+        name: location.name,
+        address: location.address,
+        city_id: location.city_id,
+        create_time: location.create_time,
+        update_time: location.update_time
+    })
+    return result;
+}
 
 module.exports = {
-    stampList
+    stampList, locationsModelCreate
 }

@@ -50,5 +50,6 @@ router.get('/cities/:id', indexConstroller.showStamps);
 router.post('/admin/cities', verifyToken.tokenAuth, verifyAdmin.AdminAuth, indexConstroller.createCity);
 router.delete('/admin/cities/:id', verifyToken.tokenAuth, verifyAdmin.AdminAuth, indexConstroller.deleteCity);
 router.put('/admin/cities/:id', verifyToken.tokenAuth, verifyAdmin.AdminAuth, verifyCity.checkCity, indexConstroller.putCity);
+router.post('/admin/locations', verifyToken.tokenAuth, verifyAdmin.AdminAuth, indexConstroller.createLocation);
 
 module.exports = router;
