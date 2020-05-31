@@ -15,6 +15,21 @@ async function stampList(cityID) {
         ]
     })
 }
+async function isLocationStampImg(stampResult) {
+    console.log(stampResult.result.location_id
+    )
+    await Locations.update(
+        {
+            location_imgId: stampResult.location_img_id
+        },
+        {
+            where:
+            {
+                id: stampResult.result.location_id
+            }
+        }
+    )
+}
 async function locationsModelCreate(location) {
     let result = {};
     result.message = `create location successfully`;
@@ -54,5 +69,5 @@ async function locationsModelDelete(locationID) {
 }
 
 module.exports = {
-    stampList, locationsModelCreate, locationsModelDelete, locationsModelPut
+    stampList, locationsModelCreate, locationsModelDelete, locationsModelPut, isLocationStampImg
 }

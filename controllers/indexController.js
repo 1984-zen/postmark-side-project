@@ -1,5 +1,7 @@
 const { citiesModelShow, citiesModelCreate, citiesModelDelete, citiesModelPut } = require('../models/citiesModel');
-const { stampList, locationsModelCreate, locationsModelDelete, locationsModelPut } = require('../models/locationsModel');
+const { stampList, locationsModelCreate, locationsModelDelete, locationsModelPut, isLocationStampImg } = require('../models/locationsModel');
+const { stampCreate } = require('../models/locationImgsModel');
+const fs = require('fs');
 
 module.exports = class City {
     async showCities(req, res, next) {
@@ -14,6 +16,21 @@ module.exports = class City {
         res.json({
             city_id: cityID,
             stamps: stamps
+        })
+    }
+    async createStamp(req, res, next) {
+        const stamp = {
+            name: req.body.stampName,
+            location_id: req.body.location_id,
+            img_url: `/images/upload/${req.file.originalname}`,
+            create_time: onTime(),
+            update_time: onTime()
+        }
+        const newPath = `public/images/upload/${req.file.originalname}`;
+        fs.rename(req.file.path, newPath, async () => {
+            let stampResult = await stampCreate(stamp)
+            await isLocationStampImg(stampResult)
+            res.json(stampResult)
         })
     }
     async createCity(req, res, next) {
