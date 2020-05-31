@@ -43,5 +43,6 @@ router.post('/posts', verifyToken.tokenAuth, upload.single('image'), userPostsCo
 router.delete('/posts/:id', verifyToken.tokenAuth, upload.single('image'), userPostsController.deletePost);
 router.put('/posts/:id', verifyToken.tokenAuth, verifyPostAuth.verifyPostAuth, upload.single('image'), userPostsController.putPost);
 router.get('/index', indexConstroller.showCities);
+router.get('/cities/:id', indexConstroller.showStamps);
 
 module.exports = router;
