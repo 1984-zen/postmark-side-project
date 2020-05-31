@@ -8,12 +8,14 @@ const LoginController = require('../controllers/loginController');
 const loginController = new LoginController();
 const UserStampsController = require('../controllers/userStampsController');
 const userStampsController = new UserStampsController();
-const verifyToken = require('../models/verifyTokenModel');
 const UserPostsController = require('../controllers/postController');
 const userPostsController = new UserPostsController();
 const IndexConstroller = require('../controllers/indexController');
 const indexConstroller = new IndexConstroller();
+
+const verifyToken = require('../models/verifyTokenModel');
 const verifyPostAuth = require('../models/verifyPostAuthModel');
+const verifyAdmin = require('../models/verifyAdminModel');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -44,5 +46,6 @@ router.delete('/posts/:id', verifyToken.tokenAuth, upload.single('image'), userP
 router.put('/posts/:id', verifyToken.tokenAuth, verifyPostAuth.verifyPostAuth, upload.single('image'), userPostsController.putPost);
 router.get('/index', indexConstroller.showCities);
 router.get('/cities/:id', indexConstroller.showStamps);
+router.post('/admin/cities', verifyToken.tokenAuth, verifyAdmin.AdminAuth, indexConstroller.createCity);
 
 module.exports = router;

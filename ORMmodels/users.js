@@ -9,6 +9,7 @@ module.exports = sequelize => {
         },account: {
           type: STRING,
         },
+        isAdmin: INTEGER,
         password: STRING,
         api_token: STRING,
         update_time: STRING,

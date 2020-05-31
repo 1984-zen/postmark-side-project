@@ -1,4 +1,4 @@
-const { citiesModelShow } = require('../models/citiesModel');
+const { citiesModelShow, citiesModelCreate } = require('../models/citiesModel');
 const { stampList } = require('../models/locationsModel');
 
 module.exports = class City {
@@ -8,7 +8,7 @@ module.exports = class City {
             cities: cities
         })
     }
-    async showStamps(req, res, next){
+    async showStamps(req, res, next) {
         const cityID = req.params.id;
         let stamps = await stampList(cityID)
         res.json({
@@ -16,4 +16,35 @@ module.exports = class City {
             stamps: stamps
         })
     }
+    async createCity(req, res, next) {
+        const city = {
+            cityName: req.body.cityName,
+            create_time: onTime(),
+            update_time: onTime()
+        }
+        let CreateCity = await citiesModelCreate(city)
+        res.json({
+            message: `create city successfully`,
+            reslut: {
+                city_id: CreateCity.id,
+                city_name: city.cityName
+            }
+        })
+    }
+}
+const onTime = () => {
+    const date = new Date();
+    const mm = date.getMonth() + 1;
+    const dd = date.getDate();
+    const hh = date.getHours();
+    const mi = date.getMinutes();
+    const ss = date.getSeconds();
+
+    return [date.getFullYear(), "-" +
+        (mm > 9 ? '' : '0') + mm, "-" +
+        (dd > 9 ? '' : '0') + dd, " " +
+        (hh > 9 ? '' : '0') + hh, ":" +
+        (mi > 9 ? '' : '0') + mi, ":" +
+        (ss > 9 ? '' : '0') + ss
+    ].join('');
 }
