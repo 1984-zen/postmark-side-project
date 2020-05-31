@@ -1,5 +1,5 @@
 const { citiesModelShow, citiesModelCreate, citiesModelDelete, citiesModelPut } = require('../models/citiesModel');
-const { stampList, locationsModelCreate } = require('../models/locationsModel');
+const { stampList, locationsModelCreate, locationsModelDelete } = require('../models/locationsModel');
 
 module.exports = class City {
     async showCities(req, res, next) {
@@ -59,6 +59,13 @@ module.exports = class City {
         let createLocation = await locationsModelCreate(location);
         res.json(
             createLocation
+        )
+    }
+    async deleteLocation(req, res, next) {
+        const deleteID = req.params.id;
+        let deleteLocation = await locationsModelDelete(deleteID);
+        res.json(
+            deleteLocation
         )
     }
 }

@@ -28,7 +28,16 @@ async function locationsModelCreate(location) {
     })
     return result;
 }
+async function locationsModelDelete(locationID) {
+    let result = {};
+    result.message = `delete location successfully`;
+    result.delete_id = locationID;
+    await Locations.destroy({
+        where: { id: locationID }
+    })
+    return result;
+}
 
 module.exports = {
-    stampList, locationsModelCreate
+    stampList, locationsModelCreate, locationsModelDelete
 }
