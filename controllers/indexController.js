@@ -1,4 +1,4 @@
-const { citiesModelShow, citiesModelCreate } = require('../models/citiesModel');
+const { citiesModelShow, citiesModelCreate, citiesModelDelete } = require('../models/citiesModel');
 const { stampList } = require('../models/locationsModel');
 
 module.exports = class City {
@@ -22,14 +22,21 @@ module.exports = class City {
             create_time: onTime(),
             update_time: onTime()
         }
-        let CreateCity = await citiesModelCreate(city)
+        let createCity = await citiesModelCreate(city);
         res.json({
             message: `create city successfully`,
             reslut: {
-                city_id: CreateCity.id,
+                city_id: createCity.id,
                 city_name: city.cityName
             }
         })
+    }
+    async deleteCity(req, res, next) {
+        const deleteID = req.params.id;
+        let deleteCity = await citiesModelDelete(deleteID);
+        res.json(
+            deleteCity
+        )
     }
 }
 const onTime = () => {

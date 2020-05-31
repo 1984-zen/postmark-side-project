@@ -47,5 +47,6 @@ router.put('/posts/:id', verifyToken.tokenAuth, verifyPostAuth.verifyPostAuth, u
 router.get('/index', indexConstroller.showCities);
 router.get('/cities/:id', indexConstroller.showStamps);
 router.post('/admin/cities', verifyToken.tokenAuth, verifyAdmin.AdminAuth, indexConstroller.createCity);
+router.delete('/admin/cities/:id', verifyToken.tokenAuth, verifyAdmin.AdminAuth, indexConstroller.deleteCity);
 
 module.exports = router;
