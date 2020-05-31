@@ -16,6 +16,7 @@ const indexConstroller = new IndexConstroller();
 const verifyToken = require('../models/verifyTokenModel');
 const verifyPostAuth = require('../models/verifyPostAuthModel');
 const verifyAdmin = require('../models/verifyAdminModel');
+const verifyCity = require('../models/verifyCityModel');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -48,5 +49,6 @@ router.get('/index', indexConstroller.showCities);
 router.get('/cities/:id', indexConstroller.showStamps);
 router.post('/admin/cities', verifyToken.tokenAuth, verifyAdmin.AdminAuth, indexConstroller.createCity);
 router.delete('/admin/cities/:id', verifyToken.tokenAuth, verifyAdmin.AdminAuth, indexConstroller.deleteCity);
+router.put('/admin/cities/:id', verifyToken.tokenAuth, verifyAdmin.AdminAuth, verifyCity.checkCity, indexConstroller.putCity);
 
 module.exports = router;

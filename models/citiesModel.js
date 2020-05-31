@@ -8,8 +8,23 @@ async function citiesModelCreate(city) {
         name: city.cityName
     })
 }
+async function citiesModelPut(city) {
+    let result = {};
+    result.message = `update city successfully`;
+    result.city_id = city.city_id;
+    result.city_name = city.cityName;
+    await Cities.update(
+        {
+            name: city.cityName
+        },
+        {
+            where: { id: city.city_id }
+        }
+    )
+    return result;
+}
 async function citiesModelDelete(cityID) {
-    result = {};
+    let result = {};
     checkID = await Cities.findOne(
         {
             where:
@@ -32,5 +47,5 @@ async function citiesModelDelete(cityID) {
     }
 }
 module.exports = {
-    citiesModelShow, citiesModelCreate, citiesModelDelete
+    citiesModelShow, citiesModelCreate, citiesModelDelete, citiesModelPut
 }
