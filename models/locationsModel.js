@@ -28,6 +28,21 @@ async function locationsModelCreate(location) {
     })
     return result;
 }
+async function locationsModelPut(location) {
+    let result = {};
+    result.message = `modify location successfully`;
+    result.result = location;
+    await Locations.update(
+        {
+            location_id: location.location_id,
+            name: location.locationName,
+            address: location.address,
+            city_id: location.city_id
+        },
+        { where: { id: location.location_id } }
+    )
+    return result;
+}
 async function locationsModelDelete(locationID) {
     let result = {};
     result.message = `delete location successfully`;
@@ -39,5 +54,5 @@ async function locationsModelDelete(locationID) {
 }
 
 module.exports = {
-    stampList, locationsModelCreate, locationsModelDelete
+    stampList, locationsModelCreate, locationsModelDelete, locationsModelPut
 }
