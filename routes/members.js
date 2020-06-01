@@ -57,5 +57,6 @@ router.delete('/admin/locations/:id', verifyToken.tokenAuth, verifyAdmin.AdminAu
 router.put('/admin/locations/:id', verifyToken.tokenAuth, verifyAdmin.AdminAuth, verifyLocation.checkLocation, indexConstroller.putLocation);
 router.post('/admin/stamps', verifyToken.tokenAuth, verifyAdmin.AdminAuth, upload.single('image'), indexConstroller.createStamp);
 router.delete('/admin/stamps/:id', verifyToken.tokenAuth, verifyAdmin.AdminAuth, verifiAdminStamp.checkAdminStamp, indexConstroller.deleteStamp);
+router.put('/admin/stamps/:id', verifyToken.tokenAuth, verifyAdmin.AdminAuth, verifiAdminStamp.checkAdminStamp, upload.single('image'), indexConstroller.putStamp);
 
 module.exports = router;
