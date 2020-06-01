@@ -18,6 +18,7 @@ const verifyPostAuth = require('../models/verifyPostAuthModel');
 const verifyAdmin = require('../models/verifyAdminModel');
 const verifyCity = require('../models/verifyCityModel');
 const verifyLocation = require('../models/verifyLocationModel');
+const verifiAdminStamp = require('../models/verifyAdminStampModel');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -55,5 +56,6 @@ router.post('/admin/locations', verifyToken.tokenAuth, verifyAdmin.AdminAuth, in
 router.delete('/admin/locations/:id', verifyToken.tokenAuth, verifyAdmin.AdminAuth, verifyLocation.checkLocation, indexConstroller.deleteLocation);
 router.put('/admin/locations/:id', verifyToken.tokenAuth, verifyAdmin.AdminAuth, verifyLocation.checkLocation, indexConstroller.putLocation);
 router.post('/admin/stamps', verifyToken.tokenAuth, verifyAdmin.AdminAuth, upload.single('image'), indexConstroller.createStamp);
+router.delete('/admin/stamps/:id', verifyToken.tokenAuth, verifyAdmin.AdminAuth, verifiAdminStamp.checkAdminStamp, indexConstroller.deleteStamp);
 
 module.exports = router;

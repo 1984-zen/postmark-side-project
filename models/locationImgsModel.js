@@ -14,7 +14,19 @@ async function stampCreate(stamp) {
     result.location_img_id = stampResult.id;
     return result;
 }
+async function stampDelete(stampID) {
+    let result = {};
+    result.message = `delete stamp successfully`;
+    await Location_imgs.destroy({
+        where:
+        {
+            id: stampID
+        }
+    })
+    result.delete_id = stampID
+    return result;
+}
 
 module.exports = {
-    stampCreate
+    stampCreate, stampDelete
 }
