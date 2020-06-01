@@ -1,8 +1,15 @@
-const { postModelCreate, postModelDelete, postModelPut } = require('../models/postModel');
+const { postModelCreate, postModelDelete, postModelPut, postModelShow } = require('../models/postModel');
 const { postImgModelCreate, postImageModelPut } = require('../models/postImgModel');
 const fs = require('fs');
 
 module.exports = class Post {
+    async showPost(req, res, next) {
+        const userID = req.user.id
+        const userPosts = await postModelShow(userID)
+        res.json({
+            result: userPosts
+        })
+    }
     async postPost(req, res, next) {
         const post = {
             imgPath: `/images/upload/${req.file.originalname}` || '',

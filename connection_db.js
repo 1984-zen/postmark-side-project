@@ -30,6 +30,7 @@ const Location_imgs = LocationImgModel(sequelize);
 
 Locations.hasMany(Location_imgs)
 Location_imgs.belongsTo(Locations)
+Posts.hasMany(Post_imgs)
 
 module.exports = {
   Users, Stamps, Posts, Post_imgs, Cities, Locations, Location_imgs, sequelize

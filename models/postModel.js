@@ -1,5 +1,15 @@
-const { Posts } = require('../connection_db');
+const { Posts, Post_imgs } = require('../connection_db');
 
+function postModelShow(userID) {
+    return Posts.findAll(
+        {
+            where: {
+                user_id: userID
+            },
+            include: [Post_imgs]
+        }
+    )
+}
 function postModelCreate(post) {
     return Posts.create(
         {
@@ -44,5 +54,5 @@ function postModelPut(putPostID, content) {
 }
 
 module.exports = {
-    postModelCreate, postModelDelete, postModelPut
+    postModelCreate, postModelDelete, postModelPut, postModelShow
 }
