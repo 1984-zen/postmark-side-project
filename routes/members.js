@@ -12,6 +12,8 @@ const UserPostsController = require('../controllers/postController');
 const userPostsController = new UserPostsController();
 const IndexConstroller = require('../controllers/indexController');
 const indexConstroller = new IndexConstroller();
+const ProfileController = require('../controllers/profileController');
+const profileController = new ProfileController;
 
 const verifyToken = require('../models/verifyTokenModel');
 const verifyPostAuth = require('../models/verifyPostAuthModel');
@@ -42,6 +44,7 @@ const upload = multer({
 
 router.post('/register', registerController.postRegister);
 router.post('/login', loginController.postLogin);
+router.get('/profiles', verifyToken.tokenAuth, profileController.showUserProfile);
 router.post('/stamps', verifyToken.tokenAuth, upload.single('image'), userStampsController.postStamp);
 router.delete('/stamps/:id', verifyToken.tokenAuth, userStampsController.deleteStamp);
 router.get('/posts', verifyToken.tokenAuth, userPostsController.showPost);

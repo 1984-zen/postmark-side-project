@@ -1,5 +1,15 @@
 const { Stamps } = require('../connection_db')
 
+function stampModelShowLimit6(userID) {
+    return Stamps.findAll(
+        {
+            where: {
+                user_id: userID
+            },
+            limit: 6,
+        }
+    )
+}
 function stampModelCreate(stamp) {
     let result = {};
     return new Promise(async (resolve, reject) => {
@@ -23,5 +33,5 @@ function stampModelDelete(deleteStampID) {
 }
 
 module.exports = {
-    stampModelCreate, stampModelDelete
+    stampModelCreate, stampModelDelete, stampModelShowLimit6
 }

@@ -12,6 +12,9 @@ module.exports = sequelize => {
         isAdmin: INTEGER,
         password: STRING,
         api_token: STRING,
+        name: STRING,
+        intro: STRING,
+        head: STRING,
         update_time: STRING,
         create_time: STRING
     }, {timestamps: false})
