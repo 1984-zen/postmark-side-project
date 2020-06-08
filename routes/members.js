@@ -4,8 +4,7 @@ const multer = require('multer');
 
 const RsgisterController = require('../controllers/registerController');
 const registerController = new RsgisterController();
-const LoginController = require('../controllers/loginController');
-const loginController = new LoginController();
+const loginAction = require('../controllers/login');
 const UserStampsController = require('../controllers/userStampsController');
 const userStampsController = new UserStampsController();
 const UserPostsController = require('../controllers/postController');
@@ -43,7 +42,7 @@ const upload = multer({
 });
 
 router.post('/register', registerController.postRegister);
-router.post('/login', loginController.postLogin);
+router.post('/login', loginAction.login);
 router.get('/profiles', verifyToken.tokenAuth, profileController.showUserProfile);
 router.post('/stamps', verifyToken.tokenAuth, upload.single('image'), userStampsController.postStamp);
 router.delete('/stamps/:id', verifyToken.tokenAuth, userStampsController.deleteStamp);
