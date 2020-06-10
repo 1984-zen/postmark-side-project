@@ -1,5 +1,15 @@
 const { Cities } = require('../connection_db')
 
+async function getHotCities() {
+    const hotCities = await Cities.findAll({
+        where: { id: [1, 2, 3, 4, 5, 6] }
+    });
+    if (!hotCities) {
+        throw new Error('get hot cities failed')
+    } else {
+        return hotCities;
+    }
+}
 async function citiesModelShow() {
     return await Cities.findAll()
 }
@@ -47,5 +57,5 @@ async function citiesModelDelete(cityID) {
     }
 }
 module.exports = {
-    citiesModelShow, citiesModelCreate, citiesModelDelete, citiesModelPut
+    citiesModelShow, citiesModelCreate, citiesModelDelete, citiesModelPut, getHotCities
 }
