@@ -4,15 +4,15 @@ exports.AdminAuth = async function verifyAdmin(req, res, next) {
     const checkAdminNull = await Users.findOne({
         where: { id: req.user.id }
     });
-    if (checkAdminNull.isAdmin === 0) {
+    if (checkAdminNull.is_admin === 0) {
         res.json({
-            message: `is not administrator`,
+            message: `api_token is not administrator`,
             error: {
                 isAdmin: `false`
             }
         })
         return;
-    } if (checkAdminNull.isAdmin === 1) {
+    } if (checkAdminNull.is_admin === 1) {
         next();
     }
 }
