@@ -47,6 +47,7 @@ router.post('/register', registerController.postRegister);
 router.post('/login', loginAction.login);
 router.post('/admin/postmarks/', verifyToken.tokenAuth, verifyAdmin.AdminAuth, upload.single('image'), locationAction.createPostmark);
 router.get('/index/hot_6_cities', indexAction.showHot6Cities);
+router.get('/index/latest_6_posts', indexAction.showLatest6Posts);
 router.get('/profiles', verifyToken.tokenAuth, profileController.showUserProfile);
 router.post('/stamps', verifyToken.tokenAuth, upload.single('image'), userStampsController.postStamp);
 router.delete('/stamps/:id', verifyToken.tokenAuth, userStampsController.deleteStamp);

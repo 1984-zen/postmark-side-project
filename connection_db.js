@@ -1,13 +1,14 @@
-const Sequelize = require('sequelize')
-const config = require('./config/development_config')
-const UserModel = require('./ORMmodels/users')
-const StampModel = require('./ORMmodels/stamps')
-const PostModel = require('./ORMmodels/posts')
-const PostImgModel = require('./ORMmodels/post_imgs')
-const CitiesModel = require('./ORMmodels/cities')
-const LocationImgModel = require('./ORMmodels/location_imgs')
-const LocationsModel = require('./ORMmodels/locations')
+const Sequelize = require('sequelize');
+const config = require('./config/development_config');
+const UserModel = require('./ORMmodels/users');
+const StampModel = require('./ORMmodels/stamps');
+const PostModel = require('./ORMmodels/posts');
+const PostImgModel = require('./ORMmodels/post_imgs');
+const CitiesModel = require('./ORMmodels/cities');
+const LocationImgModel = require('./ORMmodels/location_imgs');
+const LocationsModel = require('./ORMmodels/locations');
 const LocationPostmarksModel = require('./ORMmodels/location_postmarks');
+const UserPostmarkModel = require('./ORMmodels/user_postmarks');
 
 const sequelize = new Sequelize({
   database: config.mysql.database, username: config.mysql.user, password: config.mysql.password,
@@ -28,12 +29,14 @@ const Post_imgs = PostImgModel(sequelize);
 const Cities = CitiesModel(sequelize);
 const Locations = LocationsModel(sequelize);
 const Location_imgs = LocationImgModel(sequelize);
-const Location_postmarks = LocationPostmarksModel(sequelize)
+const Location_postmarks = LocationPostmarksModel(sequelize);
+const User_postmarks = UserPostmarkModel(sequelize);
 
 Locations.hasMany(Location_imgs)
 Location_imgs.belongsTo(Locations)
 Posts.hasMany(Post_imgs)
+Posts.hasMany(User_postmarks)
 
 module.exports = {
-  Users, Stamps, Posts, Post_imgs, Cities, Locations, Location_imgs, sequelize, Location_postmarks
+  Users, Stamps, Posts, Post_imgs, Cities, Locations, Location_imgs, sequelize, Location_postmarks, User_postmarks
 }
