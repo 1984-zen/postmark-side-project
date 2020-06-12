@@ -1,5 +1,27 @@
-const { Cities } = require('../connection_db')
+const { Cities, Distributes } = require('../connection_db')
 
+async function getCities() {
+    try {
+        const cities = await Distributes.findAll({
+            include: [Cities]
+        })
+            .then((cities) => {
+                let obj = {};
+                obj['status_code'] = 200;
+                cities.push(obj)
+                return cities;
+            })
+            .catch((err) => {
+                let obj = new Error("ORM error");
+                obj.status_code = 500;
+                obj.err = err;
+                throw obj;
+            })
+        return cities;
+    } catch (err) {
+        throw err;
+    }
+}
 async function getHotCities() {
     const hotCities = await Cities.findAll({
         where: { id: [1, 2, 3, 4, 5, 6] }
@@ -57,5 +79,6 @@ async function citiesModelDelete(cityID) {
     }
 }
 module.exports = {
-    citiesModelShow, citiesModelCreate, citiesModelDelete, citiesModelPut, getHotCities
+    citiesModelShow, citiesModelCreate, citiesModelDelete, citiesModelPut, getHotCities,
+    getCities
 }
