@@ -8,6 +8,7 @@ const loginAction = require('../controllers/login');
 const indexAction = require('../controllers/index');
 const locationAction = require('../controllers/locations');
 const cityAction = require('../controllers/cities');
+const townAction = require('../controllers/towns')
 const UserStampsController = require('../controllers/userStampsController');
 const userStampsController = new UserStampsController();
 const UserPostsController = require('../controllers/postController');
@@ -50,6 +51,7 @@ router.post('/admin/postmarks/', verifyToken.tokenAuth, verifyAdmin.AdminAuth, u
 router.get('/index/hot_6_cities', indexAction.showHot6Cities);
 router.get('/index/latest_6_posts', indexAction.showLatest6Posts);
 router.get('/cities', cityAction.showCities);
+router.get('/towns', townAction.showTowns);
 router.get('/profiles', verifyToken.tokenAuth, profileController.showUserProfile);
 router.post('/stamps', verifyToken.tokenAuth, upload.single('image'), userStampsController.postStamp);
 router.delete('/stamps/:id', verifyToken.tokenAuth, userStampsController.deleteStamp);
