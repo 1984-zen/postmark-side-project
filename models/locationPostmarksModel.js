@@ -1,5 +1,40 @@
-const { Location_postmarks, Locations } = require("../connection_db");
+const { Location_postmarks, Locations, sequelize } = require("../connection_db");
 
+async function getPostmark(locationID) {
+    try {
+        const locationDatas = await checkLocationID(locationID);
+        if (locationDatas === false) {
+            throw new Error("please enter the correct location id");
+        }
+        const postmark = await Locations.findAll({
+            where: {
+                id: locationID
+            },
+            include: [
+                {
+                    model: Location_postmarks,
+                    on: { id: sequelize.where(sequelize.col("Locations.location_postmarksId"), "=", sequelize.col("Location_postmarks.id")) },
+                    require: false
+                }
+            ]
+        })
+            .then((postmark) => {
+                let obj = {};
+                obj['status_code'] = 200;
+                postmark.push(obj)
+                return postmark;
+            })
+            .catch((err) => {
+                let obj = new Error("ORM error");
+                obj.status_code = 500;
+                obj.err = err;
+                throw obj;
+            })
+        return postmark;
+    } catch (err) {
+        throw err;
+    }
+}
 async function checkLocationID(locationID) {
     const locationDatas = await Locations.findOne({
         where: {
@@ -47,5 +82,5 @@ async function checkUploadLocationPostmark(payload) {
 }
 
 module.exports = {
-    checkUploadLocationPostmark
+    checkUploadLocationPostmark, getPostmark
 }

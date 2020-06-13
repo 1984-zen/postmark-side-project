@@ -13,7 +13,7 @@ module.exports = sequelize => {
         start_date: STRING,
         end_date: STRING,
         remark: STRING,
-        location_id: INTEGER,
+        locationId: INTEGER,
         update_time: STRING,
         create_time: STRING
     }, { timestamps: false })
