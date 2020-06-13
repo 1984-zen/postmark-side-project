@@ -42,6 +42,7 @@ Posts.hasMany(Post_imgs)
 Posts.hasMany(User_postmarks)
 Distributes.hasMany(Cities)
 Cities.hasMany(Towns)
+Towns.hasMany(Locations)
 
 module.exports = {
   Users, Stamps, Posts, Post_imgs, Cities, Locations, Location_imgs, sequelize, Location_postmarks, User_postmarks,

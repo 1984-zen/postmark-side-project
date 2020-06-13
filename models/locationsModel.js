@@ -1,5 +1,27 @@
-const { Locations, Location_imgs, sequelize } = require('../connection_db')
+const { Locations, Location_imgs, Towns, sequelize } = require('../connection_db');
 
+async function getLocations() {
+    try {
+        const locations = await Towns.findAll({
+            include: [Locations]
+        })
+            .then((locations) => {
+                let obj = {};
+                obj['status_code'] = 200;
+                locations.push(obj)
+                return locations;
+            })
+            .catch((err) => {
+                let obj = new Error("ORM error");
+                obj.status_code = 500;
+                obj.err = err;
+                throw obj;
+            })
+        return locations;
+    } catch (err) {
+        throw err;
+    }
+}
 async function stampList(cityID) {
 
     return await Locations.findAll({
@@ -69,5 +91,6 @@ async function locationsModelDelete(locationID) {
 }
 
 module.exports = {
-    stampList, locationsModelCreate, locationsModelDelete, locationsModelPut, isLocationStampImg
+    stampList, locationsModelCreate, locationsModelDelete, locationsModelPut, isLocationStampImg,
+    getLocations
 }
