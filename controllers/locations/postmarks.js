@@ -1,6 +1,25 @@
-const { checkUploadLocationPostmark, getPostmark } = require("../../models/locationPostmarksModel");
+const { checkUploadLocationPostmark, getPostmark, getPostmarkInfo } = require("../../models/locationPostmarksModel");
 const fs = require('fs');
 
+async function showPostmarkInfo(req, res, next) {
+    try {
+        const postmarkID = req.params.id;
+        const postmarkInfo = await getPostmarkInfo(postmarkID);
+        const statusCode = postmarkInfo.pop().status_code;
+        res.status(statusCode)
+        res.json({
+            status: "get location postmark infomation successfully",
+            result: postmarkInfo
+        })
+    } catch (err) {
+        const statusCode = err.status_code;
+        res.status(statusCode)
+        res.json({
+            status: "get location postmark infomation failed",
+            result: err.message
+        })
+    }
+}
 async function showPostmark(req, res, next) {
     try {
         const locationID = req.params.id;
@@ -66,5 +85,5 @@ async function createPostmark(req, res, next) {
 }
 
 module.exports = {
-    createPostmark, showPostmark
+    createPostmark, showPostmark, showPostmarkInfo
 }
