@@ -54,6 +54,7 @@ router.get('/cities', cityAction.showCities);
 router.get('/towns', townAction.showTowns);
 router.get('/locations', locationAction.showLocations);
 router.get('/locations/:id/postmark', locationAction.showPostmark);
+router.get('/locations/:id/content', locationAction.showLocationInfo);
 router.get('/profiles', verifyToken.tokenAuth, profileController.showUserProfile);
 router.post('/stamps', verifyToken.tokenAuth, upload.single('image'), userStampsController.postStamp);
 router.delete('/stamps/:id', verifyToken.tokenAuth, userStampsController.deleteStamp);

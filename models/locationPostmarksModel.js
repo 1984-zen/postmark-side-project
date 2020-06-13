@@ -1,4 +1,5 @@
 const { Location_postmarks, Locations, sequelize } = require("../connection_db");
+const { checkLocationID } = require('./locationsModel');
 
 async function getPostmark(locationID) {
     try {
@@ -33,18 +34,6 @@ async function getPostmark(locationID) {
         return postmark;
     } catch (err) {
         throw err;
-    }
-}
-async function checkLocationID(locationID) {
-    const locationDatas = await Locations.findOne({
-        where: {
-            id: locationID
-        }
-    });
-    if (!locationDatas) {
-        return false;
-    } else {
-        return locationDatas;
     }
 }
 async function createPostmarkToDB(payload) {
