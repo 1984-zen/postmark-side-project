@@ -1,4 +1,4 @@
-const { Cities, Distributes } = require('../connection_db')
+const { Cities, Distributes } = require('../connection_db');
 
 async function getCities() {
     try {
