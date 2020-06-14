@@ -1,4 +1,4 @@
-const { INTEGER, STRING } = require('sequelize')
+const { INTEGER, STRING } = require('sequelize');
 
 module.exports = sequelize => {
     return sequelize.define('collections', {
@@ -7,15 +7,10 @@ module.exports = sequelize => {
             primaryKey: true,
             autoIncrement: true
         },
-        postId: {
-            type: INTEGER,
-            // underscored: true
-        },
+        postId: INTEGER,
         user_id: INTEGER,
         cityId: INTEGER,
-        locationId: {
-            type: INTEGER,
-        },
+        locationId: INTEGER,
         update_time: STRING,
         create_time: STRING
     }, { timestamps: false })
