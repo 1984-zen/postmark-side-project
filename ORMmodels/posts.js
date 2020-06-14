@@ -8,7 +8,9 @@ module.exports = sequelize => {
       autoIncrement: true
     },
     content: STRING,
-    location_id: INTEGER,
+    locationId: {
+      type: INTEGER
+    },
     user_id: INTEGER,
     update_time: STRING,
     create_time: STRING

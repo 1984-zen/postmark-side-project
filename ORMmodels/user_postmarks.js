@@ -9,7 +9,14 @@ module.exports = sequelize => {
         },
         postmark_img: STRING,
         imprint_date: STRING,
-        postId: INTEGER,
+        post_id: {
+            type: INTEGER,
+            underscored: true
+        },
+        collection_id: {
+            type: INTEGER,
+            underscored: true
+        },
         create_time: STRING,
         update_time: STRING
     }, { timestamps: false })

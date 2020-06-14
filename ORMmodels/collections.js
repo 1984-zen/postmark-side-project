@@ -7,10 +7,15 @@ module.exports = sequelize => {
             primaryKey: true,
             autoIncrement: true
         },
-        post_id: INTEGER,
+        postId: {
+            type: INTEGER,
+            // underscored: true
+        },
         user_id: INTEGER,
-        city_id: INTEGER,
-        location_id: INTEGER,
+        cityId: INTEGER,
+        locationId: {
+            type: INTEGER,
+        },
         update_time: STRING,
         create_time: STRING
     }, { timestamps: false })
