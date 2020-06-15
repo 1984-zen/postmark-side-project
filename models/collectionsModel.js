@@ -1,6 +1,50 @@
 const { Collections, Cities, Locations, Location_postmarks, Posts, User_postmarks, sequelize } = require('../connection_db');
 const Sequelize = require('sequelize');
+const { checkLocationID } = require('./locationsModel');
 
+async function getCollectionPostsFromLocation(userID, locationID) {
+    try {
+        const locationDatas = await checkLocationID(locationID);
+        if (locationDatas === false) {
+            throw new Error("please enter the correct location id");
+        }
+        const posts = await Collections.findAll({
+            where: {
+                user_id: userID,
+                locationID: locationID
+            },
+            attributes: ['id'],
+            include: [
+                {
+                    model: Posts,
+                    attributes: ['id'],
+                    include: [
+                        {
+                            model: User_postmarks,
+                            attributes: ['id', 'imprint_date', 'postmark_img']
+                        }
+                    ]
+                }
+            ]
+        })
+            .then((posts) => {
+                let obj = {};
+                obj['status_code'] = 200;
+                posts.push(obj)
+                return posts;
+            })
+            .catch((err) => {
+                console.log(err)
+                let obj = new Error("ORM error");
+                obj.status_code = 500;
+                obj.err = err;
+                throw obj;
+            })
+        return posts;
+    } catch (err) {
+        throw err;
+    }
+}
 async function getCollectionCountsFromLocations(userID) {
     try {
         let results = {};
@@ -90,5 +134,5 @@ async function getCollectionCountsFromCities(userID) {
 }
 
 module.exports = {
-    getCollectionCountsFromCities, getCollectionCountsFromLocations
+    getCollectionCountsFromCities, getCollectionCountsFromLocations, getCollectionPostsFromLocation
 }

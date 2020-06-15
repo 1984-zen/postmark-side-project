@@ -1,6 +1,6 @@
 const { showCollectionCountsFromCities } = require('./cities');
-const { showCollectionCountsFromLocations } = require('./locations');
+const { showCollectionCountsFromLocations, showCollectionPostsFromLocation } = require('./locations');
 
 module.exports = {
-    showCollectionCountsFromCities, showCollectionCountsFromLocations
+    showCollectionCountsFromCities, showCollectionCountsFromLocations, showCollectionPostsFromLocation
 }

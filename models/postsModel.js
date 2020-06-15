@@ -1,5 +1,4 @@
 const { Posts, User_postmarks } = require('../connection_db');
-
 async function getLatest6Posts() {
     try {
         const result = await Posts.findAll({
