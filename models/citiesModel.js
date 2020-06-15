@@ -24,13 +24,26 @@ async function getCities() {
 }
 async function getHotCities() {
     const hotCities = await Cities.findAll({
-        where: { id: [1, 2, 3, 4, 5, 6] }
-    });
-    if (!hotCities) {
-        throw new Error('get hot cities failed')
-    } else {
-        return hotCities;
-    }
+        where: { id: [1, 2, 3, 4, 5, 6] },
+        attributes: ['id', 'name', 'city_img']
+    })
+        .then((hotCities) => {
+            if (!hotCities) {
+                throw new Error('get hot cities failed')
+            } else {
+                let obj = {};
+                obj['status_code'] = 200;
+                hotCities.push(obj)
+                return hotCities;
+            }
+        })
+        .catch((err) => {
+            let obj = new Error("ORM error");
+            obj.status_code = 500;
+            obj.err = err;
+            throw obj;
+        })
+    return hotCities;
 }
 async function citiesModelShow() {
     return await Cities.findAll()

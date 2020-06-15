@@ -8,6 +8,7 @@ module.exports = sequelize => {
             autoIncrement: true
         },
         name: STRING,
+        city_img: STRING,
         update_time: STRING,
         create_time: STRING
     }, { timestamps: false })
