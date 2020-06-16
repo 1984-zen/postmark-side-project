@@ -1,10 +1,28 @@
-const { Posts, User_postmarks } = require('../connection_db');
+const { Posts, User_postmarks, Cities, Locations } = require('../connection_db');
+
 async function getLatestPosts() {
+Posts.belongsTo(Cities, {foreignKey: "city_id"})
+Posts.belongsTo(Locations, {foreignKey: "location_id"})
+Posts.hasMany(User_postmarks, {foreignKey: "post_id"})
     try {
         const result = await Posts.findAll({
-            include: [User_postmarks],
-            limit: 1,
-            order: [['create_time', 'DESC']]
+            limit: 9,
+            order: [['create_time', 'DESC']],
+            attributes: ['id','create_time'],
+            include: [
+                {
+                    model: User_postmarks,
+                    attributes: ['postmark_img','imprint_date']
+                },
+                {
+                    model: Cities,
+                    attributes: ['name']
+                },
+                {
+                    model: Locations,
+                    attributes: ['name']
+                }
+            ]
         })
             .then((result) => {
                 let obj = {};
@@ -16,7 +34,7 @@ async function getLatestPosts() {
                 console.log(err)
                 let obj = new Error("ORM error");
                 obj.status_code = 500;
-                obj.err = err;
+                obj.err = err.message;
                 throw obj;
             })
         return result;

@@ -6,13 +6,13 @@ async function showLatestPosts(req, res, next) {
         const statusCode = result.pop().status_code;
         res.status(statusCode)
         res.json({
-            status: "get latest 6 posts successfully",
+            status: "get latest 9 posts successfully",
             result: result
         })
     } catch (err) {
         res.status(err.status_code)
         res.json({
-            status: "get latest 6 posts failed",
+            status: "get latest 9 posts failed",
             result: err.message
         })
     }
