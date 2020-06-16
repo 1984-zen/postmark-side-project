@@ -1,5 +1,5 @@
 const { Posts, User_postmarks } = require('../connection_db');
-async function getLatest6Posts() {
+async function getLatestPosts() {
     try {
         const result = await Posts.findAll({
             include: [User_postmarks],
@@ -26,5 +26,5 @@ async function getLatest6Posts() {
 }
 
 module.exports = {
-    getLatest6Posts
+    getLatestPosts
 }

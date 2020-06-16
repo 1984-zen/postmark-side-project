@@ -1,8 +1,8 @@
-const { getLatest6Posts } = require('../../models/postsModel');
+const { getLatestPosts } = require('../../models/postsModel');
 
-async function showLatest6Posts(req, res, next) {
+async function showLatestPosts(req, res, next) {
     try {
-        const result = await getLatest6Posts();
+        const result = await getLatestPosts();
         const statusCode = result.pop().status_code;
         res.status(statusCode)
         res.json({
@@ -19,5 +19,5 @@ async function showLatest6Posts(req, res, next) {
 }
 
 module.exports = {
-    showLatest6Posts
+    showLatestPosts
 }

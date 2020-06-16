@@ -50,7 +50,7 @@ router.post('/register', registerController.postRegister);
 router.post('/login', loginAction.login);
 router.post('/admin/postmarks/', verifyToken.tokenAuth, verifyAdmin.AdminAuth, upload.single('image'), locationAction.createPostmark);
 router.get('/index/hot_cities', indexAction.showHotCities);
-router.get('/index/latest_6_posts', indexAction.showLatest6Posts);
+router.get('/index/latest_posts', indexAction.showLatestPosts);
 router.get('/cities', cityAction.showCities);
 router.get('/towns', townAction.showTowns);
 router.get('/locations', locationAction.showLocations);

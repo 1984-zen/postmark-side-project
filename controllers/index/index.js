@@ -1,6 +1,6 @@
 const { showHotCities } = require('./hotCities');
-const { showLatest6Posts } = require('./latest6Posts');
+const { showLatestPosts } = require('./latestPosts');
 
 module.exports = {
-    showHotCities, showLatest6Posts
+    showHotCities, showLatestPosts
 }
