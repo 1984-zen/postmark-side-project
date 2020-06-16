@@ -46,6 +46,7 @@ async function getCollectionPostsFromLocation(userID, locationID) {
     }
 }
 async function getCollectionCountsFromLocations(userID) {
+    Collections.hasMany(User_postmarks)
     try {
         let results = {};
         const collectionCountsResult = await Collections.findAll({
@@ -74,6 +75,7 @@ async function getCollectionCountsFromLocations(userID) {
             },
             include: [{
                 model: User_postmarks,
+                //Select * from collections where userid join user_postmarks on postId
                 on: {
                     post_id: sequelize.where(sequelize.col("Collections.postId"),
                         "=",
