@@ -3,11 +3,11 @@ const Sequelize = require('sequelize');
 const { checkLocationID } = require('./locationsModel');
 const { onTime } = require('./onTimeModel');
 
-async function checkPostCollection(userID, postID) {
+async function checkPostCollection(payload) {
     const hasDatas = await Collections.findAll({
         where: {
-            user_id: userID,
-            postId: postID
+            user_id: payload.userID,
+            postId: payload.postID
         }
     })
         .then((hasDatas) => {
@@ -20,56 +20,56 @@ async function checkPostCollection(userID, postID) {
         .catch((err) => {
             let obj = new Error("ORM error");
             obj.status_code = 500;
-            obj.err = err;
+            obj.err = err.message;
             throw obj;
         })
-        return hasDatas;
+    return hasDatas;
 }
-async function modifyPostCollectonStatus(userID, postID, cityID, locationID) {
+async function modifyPostCollectonStatus(payload) {
     try {
-        const hasCollected = await checkPostCollection(userID, postID)
-        if(hasCollected === false) {
+        const hasCollected = await checkPostCollection(payload)
+        if (hasCollected === false) {
             const addCollection = await Collections.create({
-                postId: postID,
-                user_id: userID,
-                cityId: cityID,
-                locationId: locationID,
+                postId: payload.postID,
+                user_id: payload.userID,
+                cityId: payload.cityID,
+                locationId: payload.locationID,
                 create_time: onTime(),
                 update_time: onTime()
             })
-            .then((addCollection) => {
-                let obj = {};
-                obj['status_code'] = 200;
-                obj['collectedPostID'] = postID;
-                obj['message'] = 'collected this post successfully';
-                return obj;
-            })
-            .catch((err) => {
-                console.log(err)
-                let obj = new Error("ORM error");
-                obj.status_code = 500;
-                obj.err = err;
-                throw obj;
-            })
+                .then((addCollection) => {
+                    let obj = {};
+                    obj['status_code'] = 200;
+                    obj['collectedPostID'] = addCollection.dataValues.id;
+                    obj['message'] = 'collected this post successfully';
+                    return obj;
+                })
+                .catch((err) => {
+                    console.log(err)
+                    let obj = new Error("ORM error");
+                    obj.status_code = 500;
+                    obj.err = err.message;
+                    throw obj;
+                })
             return addCollection;
         } else {
             const removeCollection = await Collections.destroy({
-                where: { id: hasCollected.id}
+                where: { id: hasCollected.id }
             })
-            .then((removeCollection) => {
-                let obj = {};
-                obj['status_code'] = 200;
-                obj['collectedPostID'] = postID;
-                obj['message'] = 'remove this post collection successfully';
-                return obj;
-            })
-            .catch((err) => {
-                console.log(err)
-                let obj = new Error("ORM error");
-                obj.status_code = 500;
-                obj.err = err;
-                throw obj;
-            })
+                .then((removeCollection) => {
+                    let obj = {};
+                    obj['status_code'] = 200;
+                    obj['collectedPostID'] = hasCollected.id;
+                    obj['message'] = 'remove this post collection successfully';
+                    return obj;
+                })
+                .catch((err) => {
+                    console.log(err)
+                    let obj = new Error("ORM error");
+                    obj.status_code = 500;
+                    obj.err = err.message;
+                    throw obj;
+                })
             return removeCollection;
         }
     } catch (err) {
