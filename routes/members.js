@@ -60,6 +60,7 @@ router.get('/postmarks/:id', locationAction.showPostmarkInfo);
 router.get('/collections/cities', verifyToken.tokenAuth, collectionAction.showCollectionCountsFromCities);
 router.get('/collections/locations', verifyToken.tokenAuth, collectionAction.showCollectionCountsFromLocations);
 router.get('/collections/locations/:id/posts', verifyToken.tokenAuth, collectionAction.showCollectionPostsFromLocation);
+router.post('/collections/posts', verifyToken.tokenAuth, collectionAction.updatePostCollectonStatus);
 router.get('/profiles', verifyToken.tokenAuth, profileController.showUserProfile);
 router.post('/stamps', verifyToken.tokenAuth, upload.single('image'), userStampsController.postStamp);
 router.delete('/stamps/:id', verifyToken.tokenAuth, userStampsController.deleteStamp);
