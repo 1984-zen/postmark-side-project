@@ -42,7 +42,6 @@ Locations.hasMany(Location_imgs)
 Location_imgs.belongsTo(Locations)
 Locations.hasMany(Location_postmarks)
 Collections.belongsTo(Posts)
-Cities.hasMany(Towns)
 Towns.hasMany(Locations)
 Cities.hasMany(Collections)
 
