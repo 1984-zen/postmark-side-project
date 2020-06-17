@@ -52,7 +52,7 @@ router.post('/admin/postmarks/', verifyToken.tokenAuth, verifyAdmin.AdminAuth, u
 router.get('/index/hot_cities', indexAction.showHotCities);
 router.get('/index/latest_posts', indexAction.showLatestPosts);
 router.get('/cities', cityAction.showCities);
-router.get('/towns', townAction.showTowns);
+router.get('/cities/:id/towns', townAction.showTowns);
 router.get('/locations', locationAction.showLocations);
 router.get('/locations/:id/postmark', locationAction.showPostmark);
 router.get('/locations/:id/content', locationAction.showLocationInfo);

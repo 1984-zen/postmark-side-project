@@ -1,9 +1,24 @@
 const { Cities, Towns } = require('../connection_db');
+const { checkCityID } = require('./citiesModel');
 
-async function getTowns() {
+async function getTowns(cityID) {
+    Cities.hasMany(Towns, { foreignKey: "city_id" })
     try {
+        const cityDatas = await checkCityID(cityID);
+        if (cityDatas === false) {
+            throw new Error("please enter the correct city id");
+        }
         const towns = await Cities.findAll({
-            include: [Towns]
+            where: {
+                id: cityID
+            },
+            attributes: ['id', 'name'],
+            include: [
+                {
+                    model: Towns,
+                    attributes: ['id', 'name']
+                }
+            ]
         })
             .then((towns) => {
                 let obj = {};

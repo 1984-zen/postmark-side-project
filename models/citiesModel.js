@@ -1,5 +1,30 @@
 const { Cities, Distributes } = require('../connection_db');
 
+async function checkCityID(cityID) {
+    try {
+        const cityDatas = await Cities.findOne({
+            where: {
+                id: cityID
+            }
+        })
+            .then((cityDatas) => {
+                if (!cityDatas) {
+                    return false;
+                } else {
+                    return cityDatas;
+                }
+            })
+            .catch((err) => {
+                let obj = new Error("ORM error");
+                obj.status_code = 500;
+                obj.err = err;
+                throw obj;
+            })
+        return cityDatas;
+    } catch (err) {
+        throw err;
+    }
+}
 async function getCities() {
     Distributes.hasMany(Cities, { foreignKey: "distribute_id" })
     try {
@@ -100,5 +125,5 @@ async function citiesModelDelete(cityID) {
 }
 module.exports = {
     citiesModelShow, citiesModelCreate, citiesModelDelete, citiesModelPut, getHotCities,
-    getCities
+    getCities, checkCityID
 }

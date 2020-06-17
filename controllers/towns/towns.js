@@ -2,7 +2,8 @@ const { getTowns } = require('../../models/townsModel');
 
 async function showTowns(req, res, next) {
     try {
-        const towns = await getTowns();
+        cityID = req.params.id;
+        const towns = await getTowns(cityID);
         statusCode = towns.pop().status_code;
         res.status(statusCode)
         res.json({
@@ -10,12 +11,14 @@ async function showTowns(req, res, next) {
             result: towns
         })
     } catch (err) {
-        statusCode = err.status_code;
-        res.status(statusCode)
         res.json({
             status: "get all towns failed",
-            result: err.message
+            result: err.message,
+            test: err,
+            dev: err.stack
         })
+        statusCode = err.status_code;
+        res.status(statusCode)
     }
 }
 
