@@ -6,7 +6,7 @@ async function showCities(req, res, next) {
         const statusCode = cities.pop().status_code;
         res.status(statusCode)
         res.json({
-            status: "get all cities list successfuly",
+            status: "get all cities successfuly",
             result: cities
         })
     } catch (err) {
@@ -14,7 +14,9 @@ async function showCities(req, res, next) {
         res.status(statusCode)
         res.json({
             status: "get all cities failed",
-            result: err.message
+            result: err.message,
+            // test: err,
+            // dev: err.stack
         })
     }
 }

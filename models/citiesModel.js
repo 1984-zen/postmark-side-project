@@ -1,9 +1,16 @@
 const { Cities, Distributes } = require('../connection_db');
 
 async function getCities() {
+    Distributes.hasMany(Cities, { foreignKey: "distribute_id" })
     try {
         const cities = await Distributes.findAll({
-            include: [Cities]
+            attributes: ['id', 'name'],
+            include: [
+                {
+                    model: Cities,
+                    attributes: ['id', 'name']
+                }
+            ]
         })
             .then((cities) => {
                 let obj = {};
@@ -14,7 +21,7 @@ async function getCities() {
             .catch((err) => {
                 let obj = new Error("ORM error");
                 obj.status_code = 500;
-                obj.err = err;
+                obj.err = err.message;
                 throw obj;
             })
         return cities;
