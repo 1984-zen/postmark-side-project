@@ -1,6 +1,31 @@
 const { Cities, Towns } = require('../connection_db');
 const { checkCityID } = require('./citiesModel');
 
+async function checkTownID(townID) {
+    try {
+        const townDatas = await Towns.findOne({
+            where: {
+                id: townID
+            }
+        })
+            .then((townDatas) => {
+                if (!townDatas) {
+                    return false;
+                } else {
+                    return townDatas;
+                }
+            })
+            .catch((err) => {
+                let obj = new Error("ORM error");
+                obj.status_code = 500;
+                obj.err = err;
+                throw obj;
+            })
+        return townDatas;
+    } catch (err) {
+        throw err;
+    }
+}
 async function getTowns(cityID) {
     Cities.hasMany(Towns, { foreignKey: "city_id" })
     try {
@@ -39,5 +64,5 @@ async function getTowns(cityID) {
 }
 
 module.exports = {
-    getTowns
+    getTowns, checkTownID
 }

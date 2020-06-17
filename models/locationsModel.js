@@ -1,4 +1,5 @@
 const { Locations, Location_imgs, Towns, Location_postmarks, sequelize } = require('../connection_db');
+const { checkTownID } = require('./townsModel');
 
 async function getLocationInfo(locationID) {
     try {
@@ -54,10 +55,36 @@ async function checkLocationID(locationID) {
         throw err;
     }
 }
-async function getLocations() {
+async function getLocations(townID) {
+    Towns.hasMany(Locations, {foreignKey: "town_id"})
+    Locations.hasMany(Location_postmarks)
     try {
+        const townDatas = await checkTownID(townID);
+        if (townDatas === false) {
+            throw new Error("please enter the correct town id");
+        }
         const locations = await Towns.findAll({
-            include: [Locations]
+            where: {
+                id: townID
+            },
+            attributes: ['id', 'name'],
+            include: [
+                {
+                    model: Locations,
+                    attributes: ['id', 'name'],
+                    include: [
+                        {
+                            model: Location_postmarks,
+                            on: {
+                                id: sequelize.where(sequelize.col("Locations.location_postmark_id"),
+                                    "=", sequelize.col("locations.location_postmarks.id"))
+                            },
+                            attributes: ['id', 'postmark_img'],
+                            require: false
+                        }
+                    ]
+                }
+            ]
         })
             .then((locations) => {
                 let obj = {};
@@ -68,7 +95,7 @@ async function getLocations() {
             .catch((err) => {
                 let obj = new Error("ORM error");
                 obj.status_code = 500;
-                obj.err = err;
+                obj.err = err.message;
                 throw obj;
             })
         return locations;

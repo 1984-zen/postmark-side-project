@@ -10,8 +10,11 @@ module.exports = sequelize => {
         name: STRING,
         city_id: INTEGER,
         address: STRING,
-        location_postmarksId: INTEGER,
-        townId: INTEGER,
+        location_postmark_id: INTEGER,
+        town_id: {
+            type: INTEGER,
+            underscored: true
+        },
         update_time: STRING,
         create_time: STRING
     }, { timestamps: false })

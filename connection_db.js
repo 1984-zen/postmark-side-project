@@ -40,9 +40,7 @@ const Collections = CollectionsModel(sequelize);
 
 Locations.hasMany(Location_imgs)
 Location_imgs.belongsTo(Locations)
-Locations.hasMany(Location_postmarks)
 Collections.belongsTo(Posts)
-Towns.hasMany(Locations)
 Cities.hasMany(Collections)
 
 module.exports = {

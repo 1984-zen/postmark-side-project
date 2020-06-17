@@ -21,7 +21,8 @@ async function showLocationInfo(req, res, next) {
 }
 async function showLocations(req, res, next) {
     try {
-        const locations = await getLocations();
+        const townID = req.params.id;
+        const locations = await getLocations(townID);
         const statusCode = locations.pop().status_code;
         res.status(statusCode)
         res.json({
@@ -29,12 +30,14 @@ async function showLocations(req, res, next) {
             result: locations
         })
     } catch (err) {
-        const statusCode = err.status_code;
-        res.status(statusCode)
         res.json({
             status: "get all locations failed",
-            result: err.message
+            result: err.message,
+            // test: err,
+            // dev: err.stack
         })
+        const statusCode = err.status_code;
+        res.status(statusCode)
 
     }
 }
