@@ -37,30 +37,31 @@ async function getLocationPostmarkList(locationID) {
         throw err;
     }
 }
-async function getPostmarkInfo(postmarkID) {
+async function getLocationPostmarkIntroduce(postmarkID) {
     try {
-        const postmarkInfo = await Location_postmarks.findAll({
+        const postmarkDatas = await Location_postmarks.findAll({
             where: {
                 id: postmarkID
-            }
+            },
+            attributes: ['id', 'description', 'postmark_img', 'start_date', 'end_date', 'remark', 'author']
         })
-            .then((postmarkInfo) => {
-                if (!postmarkInfo) {
+            .then((postmarkDatas) => {
+                if (!postmarkDatas) {
                     return false;
                 } else {
                     let obj = {};
                     obj['status_code'] = 200;
-                    postmarkInfo.push(obj)
-                    return postmarkInfo;
+                    postmarkDatas.push(obj)
+                    return postmarkDatas;
                 }
             })
             .catch((err) => {
                 let obj = new Error("ORM error");
                 obj.status_code = 500;
-                obj.err = err;
+                obj.err = err.message;
                 throw obj;
             })
-        return postmarkInfo;
+        return postmarkDatas;
     } catch (err) {
 
     }
@@ -141,5 +142,5 @@ async function checkUploadLocationPostmark(payload) {
 }
 
 module.exports = {
-    checkUploadLocationPostmark, getLocationIntroduce, getPostmarkInfo, getLocationPostmarkList
+    checkUploadLocationPostmark, getLocationIntroduce, getLocationPostmarkIntroduce, getLocationPostmarkList
 }

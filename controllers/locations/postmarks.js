@@ -1,4 +1,4 @@
-const { checkUploadLocationPostmark, getLocationPostmarkList, getPostmarkInfo } = require("../../models/locationPostmarksModel");
+const { checkUploadLocationPostmark, getLocationPostmarkList, getLocationPostmarkIntroduce } = require("../../models/locationPostmarksModel");
 const fs = require('fs');
 
 async function showLocationPostmarkList(req, res, next) {
@@ -22,23 +22,23 @@ async function showLocationPostmarkList(req, res, next) {
         res.status(statusCode)
     }
 }
-async function showPostmarkInfo(req, res, next) {
+async function showLocationPostmarkIntroduce(req, res, next) {
     try {
         const postmarkID = req.params.id;
-        const postmarkInfo = await getPostmarkInfo(postmarkID);
-        const statusCode = postmarkInfo.pop().status_code;
+        const postmarkIntroduceResult = await getLocationPostmarkIntroduce(postmarkID);
+        const statusCode = postmarkIntroduceResult.pop().status_code;
         res.status(statusCode)
         res.json({
-            status: "get location postmark infomation successfully",
-            result: postmarkInfo
+            status: "get location postmark introduce successfully",
+            result: postmarkIntroduceResult
         })
     } catch (err) {
-        const statusCode = err.status_code;
-        res.status(statusCode)
         res.json({
-            status: "get location postmark infomation failed",
+            status: "get location postmark introduce failed",
             result: err.message
         })
+        const statusCode = err.status_code;
+        res.status(statusCode)
     }
 }
 async function createPostmark(req, res, next) {
@@ -87,5 +87,5 @@ async function createPostmark(req, res, next) {
 }
 
 module.exports = {
-    createPostmark, showPostmarkInfo, showLocationPostmarkList
+    createPostmark, showLocationPostmarkIntroduce, showLocationPostmarkList
 }

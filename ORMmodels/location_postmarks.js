@@ -9,10 +9,10 @@ module.exports = sequelize => {
         },
         description: STRING,
         postmark_img: STRING,
-        imprint_date: STRING,
         start_date: STRING,
         end_date: STRING,
         remark: STRING,
+        author: STRING,
         location_id: {
             type: INTEGER,
             underscored: true
