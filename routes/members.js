@@ -10,6 +10,7 @@ const locationAction = require('../controllers/locations');
 const cityAction = require('../controllers/cities');
 const townAction = require('../controllers/towns');
 const collectionAction = require('../controllers/collections');
+const postAction = require('../controllers/posts');
 const UserStampsController = require('../controllers/userStampsController');
 const userStampsController = new UserStampsController();
 const UserPostsController = require('../controllers/postController');
@@ -61,6 +62,7 @@ router.get('/collections/cities', verifyToken.tokenAuth, collectionAction.showCo
 router.get('/collections/locations', verifyToken.tokenAuth, collectionAction.showCollectionCountsFromLocations);
 router.get('/collections/locations/:id/posts', verifyToken.tokenAuth, collectionAction.showCollectionPostsFromLocation);
 router.post('/collections/posts', verifyToken.tokenAuth, collectionAction.updatePostCollectonStatus);
+router.get('/posts/:id', postAction.showPost);
 router.get('/profiles', verifyToken.tokenAuth, profileController.showUserProfile);
 router.post('/stamps', verifyToken.tokenAuth, upload.single('image'), userStampsController.postStamp);
 router.delete('/stamps/:id', verifyToken.tokenAuth, userStampsController.deleteStamp);
