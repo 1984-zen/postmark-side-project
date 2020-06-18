@@ -5,7 +5,7 @@ async function showLocation(req, res, next) {
     try {
         const locationID = req.params.id;
         const LocationIntroduce = await getLocationIntroduce(locationID);
-        const statusCode = postmark.pop().status_code;
+        const statusCode = LocationIntroduce.pop().status_code;
         res.status(statusCode)
         res.json({
             status: "get location introduce successfully",
