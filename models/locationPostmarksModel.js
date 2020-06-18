@@ -2,6 +2,7 @@ const { Location_postmarks, Locations, sequelize } = require("../connection_db")
 const { checkLocationID } = require('./locationsModel');
 
 async function getLocationPostmarkList(locationID) {
+    Locations.hasMany(Location_postmarks, { foreignKey: 'location_id' })
     try {
         const locationDatas = await checkLocationID(locationID);
         if (locationDatas === false) {
