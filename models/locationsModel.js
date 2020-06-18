@@ -1,35 +1,6 @@
 const { Locations, Location_imgs, Towns, Location_postmarks, sequelize } = require('../connection_db');
 const { checkTownID } = require('./townsModel');
 
-async function getLocationInfo(locationID) {
-    try {
-        const locationDatas = await checkLocationID(locationID);
-        if (locationDatas === false) {
-            throw new Error("please enter the correct location id");
-        }
-        const locationInfo = await Locations.findAll({
-            where: {
-                id: locationID
-            },
-            include: [Location_postmarks]
-        })
-            .then((locationInfo) => {
-                let obj = {};
-                obj['status_code'] = 200;
-                locationInfo.push(obj)
-                return locationInfo;
-            })
-            .catch((err) => {
-                let obj = new Error("ORM error");
-                obj.status_code = 500;
-                obj.err = err;
-                throw obj;
-            })
-        return locationInfo;
-    } catch (err) {
-        throw err;
-    }
-}
 async function checkLocationID(locationID) {
     try {
         const locationDatas = await Locations.findOne({
@@ -173,5 +144,5 @@ async function locationsModelDelete(locationID) {
 
 module.exports = {
     stampList, locationsModelCreate, locationsModelDelete, locationsModelPut, isLocationStampImg,
-    getLocations, getLocationInfo, checkLocationID
+    getLocations, checkLocationID
 }

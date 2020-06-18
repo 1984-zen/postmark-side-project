@@ -1,6 +1,6 @@
-const { createPostmark, showPostmarkInfo } = require('./postmarks');
-const { showLocations, showLocationInfo, showLocation } = require('./locations');
+const { createPostmark, showPostmarkInfo, showLocationPostmarkList } = require('./postmarks');
+const { showLocations, showLocation } = require('./locations');
 
 module.exports = {
-    createPostmark, showLocations, showLocationInfo, showPostmarkInfo, showLocation
+    createPostmark, showLocations, showPostmarkInfo, showLocation, showLocationPostmarkList
 }

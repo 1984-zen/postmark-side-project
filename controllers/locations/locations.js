@@ -1,4 +1,4 @@
-const { getLocations, getLocationInfo } = require('../../models/locationsModel');
+const { getLocations } = require('../../models/locationsModel');
 const { getLocationIntroduce } = require('../../models/locationPostmarksModel');
 
 async function showLocation(req, res, next) {
@@ -20,25 +20,6 @@ async function showLocation(req, res, next) {
         })
         const statusCode = err.status_code;
         res.status(statusCode)
-    }
-}
-async function showLocationInfo(req, res, next) {
-    try {
-        const locationID = req.params.id;
-        const locationInfo = await getLocationInfo(locationID);
-        const statusCode = locationInfo.pop().status_code;
-        res.status(statusCode)
-        res.json({
-            status: "get location infomation successfully",
-            result: locationInfo
-        })
-    } catch (err) {
-        const statusCode = err.status_code;
-        res.status(statusCode)
-        res.json({
-            status: "get location infomation failed",
-            result: err.message
-        })
     }
 }
 async function showLocations(req, res, next) {
@@ -65,5 +46,5 @@ async function showLocations(req, res, next) {
 }
 
 module.exports = {
-    showLocations, showLocationInfo, showLocation
+    showLocations, showLocation
 }
