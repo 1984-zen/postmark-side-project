@@ -29,37 +29,43 @@ async function getPostmarkInfo(postmarkID) {
 
     }
 }
-async function getPostmark(locationID) {
+async function getLocationIntroduce(locationID) {
+    Locations.hasMany(Location_postmarks)
     try {
         const locationDatas = await checkLocationID(locationID);
         if (locationDatas === false) {
             throw new Error("please enter the correct location id");
         }
-        const postmark = await Locations.findAll({
+        const locationIntroduce = await Locations.findAll({
             where: {
                 id: locationID
             },
+            attributes: ['id', 'name', 'address'],
             include: [
                 {
                     model: Location_postmarks,
-                    on: { id: sequelize.where(sequelize.col("Locations.location_postmarksId"), "=", sequelize.col("Location_postmarks.id")) },
+                    on: {
+                        id: sequelize.where(sequelize.col("Locations.location_postmark_id"),
+                            "=", sequelize.col("location_postmarks.id"))
+                    },
+                    attributes: ['id', 'postmark_img'],
                     require: false
-                }
+                },
             ]
         })
-            .then((postmark) => {
+            .then((locationIntroduce) => {
                 let obj = {};
                 obj['status_code'] = 200;
-                postmark.push(obj)
-                return postmark;
+                locationIntroduce.push(obj)
+                return locationIntroduce;
             })
             .catch((err) => {
                 let obj = new Error("ORM error");
                 obj.status_code = 500;
-                obj.err = err;
+                obj.err = err.message;
                 throw obj;
             })
-        return postmark;
+        return locationIntroduce;
     } catch (err) {
         throw err;
     }
@@ -99,5 +105,5 @@ async function checkUploadLocationPostmark(payload) {
 }
 
 module.exports = {
-    checkUploadLocationPostmark, getPostmark, getPostmarkInfo
+    checkUploadLocationPostmark, getLocationIntroduce, getPostmarkInfo
 }
