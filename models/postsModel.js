@@ -1,5 +1,41 @@
 const { Posts, User_postmarks, Cities, Locations, Users } = require('../connection_db');
+const { checkLocationID } = require('./locationsModel');
+const { checkCityID } = require('./citiesModel');
 
+async function createPostIntroduce(payload) {
+    try {
+        const locationDatas = await checkLocationID(payload.locationID);
+        if (locationDatas === false) {
+            throw new Error("this location id does not exist");
+        }
+        const cityDatas = await checkCityID(payload.cityID)
+        if (cityDatas === false) {
+            throw new Error("this city id does not exist");
+        }
+        const isCreate = await Posts.create({
+            content: payload.content,
+            user_id: payload.userID,
+            city_id: payload.cityID,
+            location_id: payload.locationID
+        })
+        .then((isCreate) => {
+            if (!isCreate) {
+                return false;
+            } else {
+                return isCreate;
+            }
+        })
+        .catch((err) => {
+            let obj = new Error("ORM error");
+            obj.status_code = 500;
+            obj.err = err;
+            throw obj;
+        })
+        return isCreate;
+    }catch(err){
+        throw err;
+    }
+}
 async function destroyPost(postID) {
     try {
         const isDelete = await Posts.destroy({
@@ -162,5 +198,5 @@ async function getLatestPosts() {
 }
 
 module.exports = {
-    getLatestPosts, getPost, modifyPost, destroyPost
+    getLatestPosts, getPost, modifyPost, destroyPost, createPostIntroduce
 }
