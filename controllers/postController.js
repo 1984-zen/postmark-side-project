@@ -1,5 +1,5 @@
-const { postModelCreate, postModelDelete, postModelPut, postModelShow } = require('../models/postModel');
-const { postImgModelCreate, postImageModelPut } = require('../models/postImgModel');
+const { postModelCreate, postModelShow } = require('../models/postModel');
+const { postImgModelCreate } = require('../models/postImgModel');
 const fs = require('fs');
 
 module.exports = class Post {
@@ -28,22 +28,6 @@ module.exports = class Post {
             status: "upload post successfully",
             result: post
         })
-    }
-    deletePost(req, res, next) {
-        const deletePostID = req.params.id;
-        postModelDelete(deletePostID)
-            .then(result => {
-                res.json({
-                    status: "delete successfully",
-                    delete_id: result
-                })
-            })
-            .catch(err => {
-                res.json({
-                    status: "delete failed",
-                    result: err
-                })
-            })
     }
 }
 const onTime = () => {

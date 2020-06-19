@@ -1,5 +1,28 @@
 const { Posts, User_postmarks, Cities, Locations, Users } = require('../connection_db');
 
+async function destroyPost(postID) {
+    try {
+        const isDelete = await Posts.destroy({
+            where: {
+                id: postID
+            }
+        })
+            .then((isDelete) => {
+                return [
+                    {
+                        message: "one post has been deleted",
+                        post_id: postID
+                    },
+                    {
+                        status_code: 200
+                    }
+                ]
+            })
+        return isDelete;
+    } catch (err) {
+        throw err;
+    }
+}
 async function modifyPost(payload) {
     try {
         const isUpdate = await Posts.update(
@@ -48,27 +71,6 @@ async function modifyPost(payload) {
         throw err;
     }
 }
-// async function checkPost(postID) {
-//     const hasDatas = await Posts.findAll({
-//         where: {
-//             id: postID
-//         }
-//     })
-//         .then((hasDatas) => {
-//             if (!hasDatas.length) {
-//                 return false;
-//             } else {
-//                 return hasDatas;
-//             }
-//         })
-//         .catch((err) => {
-//             let obj = new Error("ORM error");
-//             obj.status_code = 500;
-//             obj.err = err.message;
-//             throw obj;
-//         })
-//     return hasDatas;
-// }
 async function getPost(postID) {
     Posts.hasMany(User_postmarks, { foreignKey: 'post_id' })
     Posts.belongsTo(Users, { foreignKey: 'user_id' })
@@ -160,5 +162,5 @@ async function getLatestPosts() {
 }
 
 module.exports = {
-    getLatestPosts, getPost, modifyPost
+    getLatestPosts, getPost, modifyPost, destroyPost
 }

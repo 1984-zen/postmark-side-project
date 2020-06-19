@@ -1,5 +1,25 @@
-const { getPost, modifyPost } = require('../../models/postsModel');
+const { getPost, modifyPost, destroyPost } = require('../../models/postsModel');
 
+async function deletePost(req, res, next) {
+    try {
+        const postID = req.post.id;
+        const [message, status_code] = await destroyPost(postID);
+        const statusCode = status_code.status_code;
+        res.status(statusCode)
+        res.json({
+            status: "delete post successfully",
+            result: message
+        })
+    } catch (err) {
+        res.json({
+            status: "delete post failed",
+            result: err.message,
+        })
+        const statusCode = err.status_code;
+        res.status(statusCode)
+        console.log(err.stack)
+    }
+}
 async function updatePost(req, res, next) {
     try {
         const payload = {
@@ -47,5 +67,5 @@ async function showPost(req, res, next) {
 }
 
 module.exports = {
-    showPost, updatePost
+    showPost, updatePost, deletePost
 }

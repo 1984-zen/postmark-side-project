@@ -11,7 +11,7 @@ async function verifyPostAuth(req, res, next) {
             .then(([hasDatas]) => {
                 if (!hasDatas) {
                     const errDatas = {
-                        errMessage: "please enter the correct post id",
+                        errMessage: "this post id does not exsit",
                         status_code: 400
                     }
                     throw errDatas;
