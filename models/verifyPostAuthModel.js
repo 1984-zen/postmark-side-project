@@ -1,20 +1,58 @@
 const { Posts } = require('../connection_db')
 
-exports.verifyPostAuth = async function (req, res, next) {
-    const checkPostAuth = await Posts.findAll({ where: { user_id: req.user.id, id: req.params.id } })
-    const checkNull = await Posts.findAll({ where: { id: req.params.id } })
-    if (checkNull.length === 0) {
-        res.json({
-            err: `post id ${req.params.id} does not exist`
+async function verifyPostAuth(req, res, next) {
+    try {
+        const postID = req.params.id;
+        const hasDatas = await Posts.findAll({
+            where: {
+                id: postID
+            }
         })
-    }
-    else if (checkPostAuth.length === 0) {
+            .then(([hasDatas]) => {
+                if (!hasDatas) {
+                    const errDatas = {
+                        errMessage: "please enter the correct post id",
+                        status_code: 400
+                    }
+                    throw errDatas;
+                } else if (hasDatas.dataValues.user_id !== req.user.id) {
+                    let errDatas = {
+                        errMessage: "this user has no authorization with this post",
+                        status_code: 401
+                    }
+                    throw errDatas;
+                }
+                else {
+                    req.post = hasDatas
+                    next();
+                    return req.post
+                }
+            })
+            .catch((errDatas) => {
+                let obj = {}
+                if (errDatas.status_code === undefined) {
+                    obj.status_code = 500;
+                } else {
+                    obj.status_code = errDatas.status_code;
+                }
+                if (!errDatas.message) {
+                    obj.errMessage = errDatas.errMessage
+                } else {
+                    obj.errMessage = errDatas.message
+                }
+                throw obj;
+            })
+    } catch (err) {
+        const statusCode = err.status_code;
+        res.status(statusCode)
         res.json({
-            err: "update failed, because user does not has this post's authorization"
+            status: "validate post auth failed",
+            result: err
         })
-        return
-    } else {
-        req.post = checkPostAuth[0];
-        next();
+        console.log(err.stack)
     }
+}
+
+module.exports = {
+    verifyPostAuth
 }

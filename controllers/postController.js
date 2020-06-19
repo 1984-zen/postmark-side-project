@@ -45,28 +45,6 @@ module.exports = class Post {
                 })
             })
     }
-    async putPost(req, res, next) {
-        const putPostID = req.post.id;
-        let imgPath = null;
-        if (req.file) {
-            imgPath = `/images/upload/${req.file.originalname}`
-            const newPath = `public/images/upload/${req.file.originalname}`;
-            fs.rename(req.file.path, newPath, async () => {
-                await postImageModelPut(putPostID, imgPath)
-            })
-        }
-        const content = req.body.content;
-        let result = {
-            post_id: putPostID,
-            content: content,
-            imgPath: imgPath
-        }
-        await postModelPut(putPostID, content)
-        res.json({
-            status: "update post successfully",
-            result: result
-        })
-    }
 }
 const onTime = () => {
     const date = new Date();

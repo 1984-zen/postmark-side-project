@@ -42,17 +42,7 @@ async function postModelDelete(deletePostID) {
         }
     })
 }
-function postModelPut(putPostID, content) {
-    return Posts.update(
-        {
-            content: content
-        },
-        {
-            where: { id: putPostID }
-        }
-    )
-}
 
 module.exports = {
-    postModelCreate, postModelDelete, postModelPut, postModelShow
+    postModelCreate, postModelDelete, postModelShow
 }

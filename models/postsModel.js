@@ -1,26 +1,74 @@
 const { Posts, User_postmarks, Cities, Locations, Users } = require('../connection_db');
 
-async function checkPost(postID) {
-    const hasDatas = await Posts.findAll({
-        where: {
-            id: postID
-        }
-    })
-        .then((hasDatas) => {
-            if (!hasDatas.length) {
-                return false;
-            } else {
-                return hasDatas[0];
+async function modifyPost(payload) {
+    try {
+        const isUpdate = await Posts.update(
+            {
+                content: payload.content,
+                location_id: payload.locationID
+            },
+            {
+                where: {
+                    id: payload.postID
+                }
             }
-        })
-        .catch((err) => {
-            let obj = new Error("ORM error");
-            obj.status_code = 500;
-            obj.err = err.message;
-            throw obj;
-        })
-    return hasDatas;
+        )
+            // isUpdate is array[0] or [1]
+            .then(([isUpdate]) => {
+                if (isUpdate === 0) {
+                    return [
+                        {
+                            message: "nothing changed"
+                        },
+                        {
+                            status_code: 200
+                        }
+                    ]
+                } else {
+                    return [
+                        {
+                            message: "something changed",
+                            content: payload.content,
+                            location_id: payload.locationID
+                        },
+                        {
+                            status_code: 200
+                        }
+                    ]
+                }
+            })
+            .catch((err) => {
+                let obj = new Error("ORM error");
+                obj.status_code = 500;
+                obj.err = err.message;
+                throw obj;
+            })
+        return isUpdate;
+    } catch (err) {
+        throw err;
+    }
 }
+// async function checkPost(postID) {
+//     const hasDatas = await Posts.findAll({
+//         where: {
+//             id: postID
+//         }
+//     })
+//         .then((hasDatas) => {
+//             if (!hasDatas.length) {
+//                 return false;
+//             } else {
+//                 return hasDatas;
+//             }
+//         })
+//         .catch((err) => {
+//             let obj = new Error("ORM error");
+//             obj.status_code = 500;
+//             obj.err = err.message;
+//             throw obj;
+//         })
+//     return hasDatas;
+// }
 async function getPost(postID) {
     Posts.hasMany(User_postmarks, { foreignKey: 'post_id' })
     Posts.belongsTo(Users, { foreignKey: 'user_id' })
@@ -112,5 +160,5 @@ async function getLatestPosts() {
 }
 
 module.exports = {
-    getLatestPosts, getPost
+    getLatestPosts, getPost, modifyPost
 }

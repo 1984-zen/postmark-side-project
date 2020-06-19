@@ -10,14 +10,7 @@ async function postImgModelCreate(postCreate, post) {
         }
     )
 }
-async function postImageModelPut(putPostID, imgPath) {
-    await Post_imgs.update(
-        {
-            img_url: imgPath
-        },
-        { where: { post_id: putPostID } }
-    )
-}
+
 module.exports = {
-    postImgModelCreate, postImageModelPut
+    postImgModelCreate
 }
