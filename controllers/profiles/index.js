@@ -1,5 +1,5 @@
-const { showProfile } = require('./profiles');
+const { showProfile, updateProfile } = require('./profiles');
 
 module.exports = {
-    showProfile
+    showProfile, updateProfile
 }

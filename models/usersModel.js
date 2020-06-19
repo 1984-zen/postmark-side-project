@@ -1,5 +1,74 @@
 const { Users } = require("../connection_db");
 
+async function modifyProfile(payload) {
+    try {
+        async function modify() {
+            if (payload.headImg === false) {
+                console.log('llllll')
+                const isModify = await Users.update(
+                    {
+                        password: payload.password,
+                        name: payload.name,
+                    },
+                    {
+                        where: {
+                            id: payload.userID
+                        }
+                    }
+                )
+                return isModify
+            } else {
+                console.log('hhhhh')
+                const isModify = await Users.update(
+                    {
+                        password: payload.password,
+                        name: payload.name,
+                        head_img: payload.headImg
+                    },
+                    {
+                        where: {
+                            id: payload.userID
+                        }
+                    }
+                )
+                return isModify
+            }
+        }
+        const result = await modify().then(([isModify]) => {
+            if (isModify === 0) {
+                return [
+                    {
+                        message: "nothing changed"
+                    },
+                    {
+                        status_code: 200
+                    }
+                ]
+            } else {
+                return [
+                    {
+                        message: "something changed",
+                        password: payload.password,
+                        name: payload.name,
+                        head_img: payload.headImg
+                    },
+                    {
+                        status_code: 201
+                    }
+                ]
+            }
+        })
+            .catch((err) => {
+                let obj = new Error("ORM error");
+                obj.status_code = 500;
+                obj.err = err.message;
+                throw obj;
+            })
+            return result;
+    } catch (err) {
+        throw err;
+    }
+}
 async function getProfile(userID) {
     try {
         const profile = await Users.findAll({
@@ -104,5 +173,5 @@ async function profileShow(userID) {
 }
 
 module.exports = {
-    checkLogin, profileShow, getProfile
+    checkLogin, profileShow, getProfile, modifyProfile
 };

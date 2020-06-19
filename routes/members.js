@@ -66,6 +66,7 @@ router.put      ('/posts/:id', verifyToken.tokenAuth, verifyPostAuth.verifyPostA
 router.delete   ('/posts/:id', verifyToken.tokenAuth, verifyPostAuth.verifyPostAuth, postAction.deletePost);
 router.post     ('/posts', verifyToken.tokenAuth, upload.single('image'), postAction.createPost);
 router.get      ('/profiles/:id', profileAction.showProfile);
+router.put      ('/profiles/:id', verifyToken.tokenAuth, upload.single('image'), profileAction.updateProfile);
 router.get      ('/profiles', verifyToken.tokenAuth, profileController.showUserProfile);
 router.post     ('/stamps', verifyToken.tokenAuth, upload.single('image'), userStampsController.postStamp);
 router.delete   ('/stamps/:id', verifyToken.tokenAuth, userStampsController.deleteStamp);
