@@ -1,5 +1,37 @@
 const { Users } = require("../connection_db");
 
+async function getProfile(userID) {
+    try {
+        const profile = await Users.findAll({
+            where: {
+                id: userID
+            },
+            attributes: ['id', 'name', 'head_img']
+        })
+            .then(([profile]) => {
+                return [
+                    {
+                        message: "get one profile",
+                        id: profile.dataValues.id,
+                        name: profile.dataValues.name,
+                        headImg: profile.dataValues.head_img
+                    },
+                    {
+                        status_code: 200
+                    }
+                ]
+            })
+            .catch((err) => {
+                let obj = new Error("ORM error");
+                obj.status_code = 500;
+                obj.err = err;
+                throw obj;
+            })
+        return profile;
+    } catch (err) {
+        throw err;
+    }
+}
 async function checkUser(payload) {
     const userDatas = await Users.findOne({
         where: {
@@ -72,6 +104,5 @@ async function profileShow(userID) {
 }
 
 module.exports = {
-    checkLogin,
-    profileShow,
+    checkLogin, profileShow, getProfile
 };
