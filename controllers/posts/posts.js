@@ -101,22 +101,20 @@ async function updatePost(req, res, next) {
 async function showPost(req, res, next) {
     try {
         const postID = req.params.id;
-        const post = await getPost(postID);
-        const statusCode = post.pop().status_code;
-        res.status(statusCode)
+        const [post, status_code] = await getPost(postID);
+        res.status(status_code.status_code)
         res.json({
             status: "get post successfully",
             result: post
         })
+        console.log(err.stack)
     } catch (err) {
+        const statusCode = err.status_code;
+        res.status(statusCode)
         res.json({
             status: "get post failed",
             result: err.message,
-            test: err,
         })
-        const statusCode = err.status_code;
-        res.status(statusCode)
-        console.log(err.stack)
     }
 }
 

@@ -112,9 +112,14 @@ async function getPost(postID) {
     Posts.belongsTo(Users, { foreignKey: 'user_id' })
     Posts.belongsTo(Locations, { foreignKey: 'location_id' })
     try {
-        const hasDatas = await checkPost(postID)
+        const hasDatas = await checkPostID(postID) 
         if (hasDatas === false) {
-            throw new Error("please enter the correct post id")
+            throw {
+                message: {
+                    message: "this post id does not exist",
+                },
+                status_code: 400
+            }
         }
         const post = await Posts.findAll({
             where: {
@@ -153,6 +158,27 @@ async function getPost(postID) {
     } catch (err) {
         throw err;
     }
+}
+async function checkPostID(postID) {
+        const postDatas = await Posts.findOne({
+            where: {
+                id: postID
+            }
+        })
+            .then((postDatas) => {
+                if (!postDatas) {
+                    return false;
+                } else {
+                    return postDatas;
+                }
+            })
+            .catch((err) => {
+                let obj = new Error("ORM error");
+                obj.status_code = 500;
+                obj.err = err;
+                throw obj;
+            })
+        return postDatas;
 }
 async function getLatestPosts() {
     Posts.belongsTo(Cities, { foreignKey: "city_id" })
