@@ -1,5 +1,6 @@
 const { getPost, modifyPost, destroyPost, createPostIntroduce } = require('../../models/postsModel');
-const { createPostmark } = require('../../models/userPostmarksModel');
+const { createPostmark, modifyPostImprintDate } = require('../../models/userPostmarksModel');
+const { checkLocationID } = require('../../models/locationsModel')
 const fs = require('fs');
 
 function checkPostmarkImgPath(postmarkFile) {
@@ -79,7 +80,22 @@ async function updatePost(req, res, next) {
         const payload = {
             content: req.body.content,
             locationID: req.body.locationID,
-            postID: req.post.id
+            postID: req.post.id,
+            imprintDate: req.body.imprintDate
+        }
+        if(payload.imprintDate){
+            const updateImprintDate = await modifyPostImprintDate(payload)
+        }
+        if(payload.locationID) {
+            const hasLocation = await checkLocationID(payload.locationID)
+            if(hasLocation === false){
+                throw {
+                    message: {
+                        message: "this location id does not exist",
+                    },
+                    status_code: 400
+                }
+            }
         }
         const [message, status_code] = await modifyPost(payload);
         const statusCode = status_code.status_code;

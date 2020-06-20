@@ -74,27 +74,18 @@ async function modifyPost(payload) {
         )
             // isUpdate is array[0] or [1]
             .then(([isUpdate]) => {
-                if (isUpdate === 0) {
-                    return [
-                        {
-                            message: "nothing changed"
-                        },
-                        {
-                            status_code: 200
-                        }
-                    ]
-                } else {
                     return [
                         {
                             message: "something changed",
                             content: payload.content,
-                            location_id: payload.locationID
+                            location_id: payload.locationID,
+                            imprintDate: payload.imprintDate
                         },
                         {
                             status_code: 200
                         }
                     ]
-                }
+                
             })
             .catch((err) => {
                 let obj = new Error("ORM error");

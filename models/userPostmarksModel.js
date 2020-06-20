@@ -1,5 +1,21 @@
 const { User_postmarks } = require('../connection_db');
 
+async function modifyPostImprintDate(payload){
+    try {
+        const isUpdate = await User_postmarks.update(
+            {
+                imprint_date: payload.imprintDate
+            },
+            {
+                where: {
+                    id: payload.postID
+                }
+            }
+        )
+    } catch(err) {
+        throw err;
+    }
+}
 async function createPostmark(payload){
     try{
         const isCreate = await User_postmarks.create({
@@ -28,5 +44,5 @@ async function createPostmark(payload){
 }
 
 module.exports = {
-    createPostmark
+    createPostmark, modifyPostImprintDate
 }
