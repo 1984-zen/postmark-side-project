@@ -36,9 +36,9 @@ async function verifyPostAuth(req, res, next) {
                     obj.status_code = errDatas.status_code;
                 }
                 if (!errDatas.message) {
-                    obj.errMessage = errDatas.errMessage
+                    obj.message = errDatas.errMessage
                 } else {
-                    obj.errMessage = errDatas.message
+                    obj.message = errDatas.message
                 }
                 throw obj;
             })
