@@ -1,6 +1,48 @@
-const { Locations, Location_imgs, Towns, Location_postmarks, sequelize } = require('../connection_db');
+const { Locations, Location_imgs, Towns, Location_postmarks, sequelize, Posts, User_postmarks } = require('../connection_db');
 const { checkTownID } = require('./townsModel');
 
+async function getLocationPosts(locationID) {
+    try {
+        const posts = await Locations.findAll({
+            where: {
+                id: locationID
+            },
+            attributes: ['id'],
+            include: [
+                {
+                    model: Posts,
+                    attributes: ['id', 'content'],
+                    include: [
+                        {
+                            model: User_postmarks,
+                            attributes: ['id', 'postmark_img', 'imprint_date']
+                        }
+                    ]
+                }
+            ]
+        })
+            .then(([posts]) => {
+                return [
+                    {
+                        message: "get some posts",
+                        datas: posts
+                    },
+                    {
+                        status_code: 200
+                    }
+                ]
+            })
+            .catch((err) => {
+                let obj = new Error("ORM error");
+                obj.status_code = 500;
+                obj.err = err.message;
+                throw obj;
+            })
+        return posts;
+    } catch (err) {
+        throw err;
+    }
+}
 async function checkLocationID(locationID) {
     try {
         const locationDatas = await Locations.findOne({
@@ -27,7 +69,7 @@ async function checkLocationID(locationID) {
     }
 }
 async function getLocations(townID) {
-    Towns.hasMany(Locations, {foreignKey: "town_id"})
+    Towns.hasMany(Locations, { foreignKey: "town_id" })
     Locations.hasMany(Location_postmarks)
     try {
         const townDatas = await checkTownID(townID);
@@ -144,5 +186,5 @@ async function locationsModelDelete(locationID) {
 
 module.exports = {
     stampList, locationsModelCreate, locationsModelDelete, locationsModelPut, isLocationStampImg,
-    getLocations, checkLocationID
+    getLocations, checkLocationID, getLocationPosts
 }

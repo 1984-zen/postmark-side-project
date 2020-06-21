@@ -56,6 +56,7 @@ router.get      ('/cities/:id/towns', townAction.showTowns);
 router.get      ('/towns/:id/locations', locationAction.showLocations);
 router.get      ('/locations/:id/location_introduce', locationAction.showLocation);
 router.get      ('/locations/:id/history_postmark_list', locationAction.showLocationPostmarkList);
+router.get      ('/locations/:id/posts', locationAction.showLocationPosts);
 router.get      ('/postmarks/:id', locationAction.showLocationPostmarkIntroduce);
 router.get      ('/collections/cities', verifyToken.tokenAuth, collectionAction.showCollectionCountsFromCities);
 router.get      ('/collections/locations', verifyToken.tokenAuth, collectionAction.showCollectionCountsFromLocations);
