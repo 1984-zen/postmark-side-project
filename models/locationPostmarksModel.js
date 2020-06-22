@@ -1,5 +1,4 @@
 const { Location_postmarks, Locations, sequelize } = require("../connection_db");
-const { checkLocationID } = require('./locationsModel');
 
 async function getLocationPostmarkList(locationID) {
     Locations.hasMany(Location_postmarks, { foreignKey: 'location_id' })
@@ -69,10 +68,6 @@ async function getLocationPostmarkIntroduce(postmarkID) {
 async function getLocationIntroduce(locationID) {
     Locations.hasMany(Location_postmarks)
     try {
-        const locationDatas = await checkLocationID(locationID);
-        if (locationDatas === false) {
-            throw new Error("please enter the correct location id");
-        }
         const locationIntroduce = await Locations.findAll({
             where: {
                 id: locationID
@@ -90,11 +85,16 @@ async function getLocationIntroduce(locationID) {
                 },
             ]
         })
-            .then((locationIntroduce) => {
-                let obj = {};
-                obj['status_code'] = 200;
-                locationIntroduce.push(obj)
-                return locationIntroduce;
+            .then(([locationIntroduce]) => {
+                return [
+                    {
+                        message: "get one location",
+                        datas: locationIntroduce
+                    },
+                    {
+                        status_code: 200
+                    }
+                ]
             })
             .catch((err) => {
                 let obj = new Error("ORM error");

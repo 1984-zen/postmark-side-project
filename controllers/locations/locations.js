@@ -1,25 +1,33 @@
-const { getLocations } = require('../../models/locationsModel');
+const { getLocations, checkLocationID } = require('../../models/locationsModel');
 const { getLocationIntroduce } = require('../../models/locationPostmarksModel');
 
-async function showLocation(req, res, next) {
+async function showLocationIntroduce(req, res, next) {
     try {
         const locationID = req.params.id;
-        const LocationIntroduce = await getLocationIntroduce(locationID);
-        const statusCode = LocationIntroduce.pop().status_code;
-        res.status(statusCode)
+        const locationDatas = await checkLocationID(locationID);
+        if (locationDatas === false) {
+            throw {
+                message: {
+                    message: "this location id does not exist",
+                },
+                status_code: 400
+            }
+        }
+        const [message, status_code] = await getLocationIntroduce(locationID);
+        // const statusCode = LocationIntroduce.pop().status_code;
+        res.status(status_code.status_code)
         res.json({
             status: "get location introduce successfully",
-            result: LocationIntroduce
+            result: message
         })
     } catch (err) {
-        res.json({
-            status: "get location introduce failed",
-            result: err.message,
-            // test: err,
-            // dev: err.stack
-        })
         const statusCode = err.status_code;
         res.status(statusCode)
+        res.json({
+            status: "get location introduce failed",
+            result: err.message
+        })
+        console.log(err.stack)
     }
 }
 async function showLocations(req, res, next) {
@@ -46,5 +54,5 @@ async function showLocations(req, res, next) {
 }
 
 module.exports = {
-    showLocations, showLocation
+    showLocations, showLocationIntroduce
 }
