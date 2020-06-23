@@ -11,6 +11,10 @@ jobs:
         node-version: [12.x]
     steps:
     - uses: actions/checkout@v2
+    - name: Setup Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '${{ matrix.node-version }}'
     - name: decrypt
       run: |
         mkdir $HOME/secrets
@@ -20,14 +24,5 @@ jobs:
         PASSPHRASE: ${{ secrets.PASSPHRASE }}
     - name: chmod
       run: chmod 600 $HOME/secrets/key
-    - name: Setup Node.js
-      uses: actions/setup-node@v1
-      with:
-        node-version: '${{ matrix.node-version }}'
     - name: ssh
-#      run: ssh -o StrictHostKeyChecking=no -i $HOME/secrets/key zen_master@35.187.152.88 "cd postmark-side-project/;git pull;npm install;pm2 restart postmark-side-project"
-      run: ssh -o StrictHostKeyChecking=no -i $HOME/secrets/key zen_master@35.187.152.88 "cd postmark-side-project/;git pull"
-    - name: run npm install
-      run: ssh -o StrictHostKeyChecking=no -i $HOME/secrets/key zen_master@35.187.152.88 "cd postmark-side-project/;npm install"
-    - name: run pm2 restart
-      run: ssh -o StrictHostKeyChecking=no -i $HOME/secrets/key zen_master@35.187.152.88 "cd postmark-side-project/;pm2 restart postmark-side-project"
+      run: ssh -o StrictHostKeyChecking=no -i $HOME/secrets/key zen_master@35.187.152.88 "cd postmark-side-project/;git pull;npm install;pm2 restart postmark-side-project"
