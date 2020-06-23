@@ -18,8 +18,8 @@ jobs:
         --output $HOME/secrets/key google_compute_engine.gpg
       env:
         PASSPHRASE: ${{ secrets.PASSPHRASE }}
-    - name: test key
-      run: ls $HOME/secrets/key
+#    - name: test key
+#      run: ls $HOME/secrets/key
     - name: chmod
       run: chmod 600 $HOME/secrets/key
     - name: ssh
