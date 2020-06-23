@@ -28,6 +28,6 @@ jobs:
       with:
         node-version: '${{ matrix.node-version }}'
     - name: run npm install
-      run: npm install
+      run: ssh -o StrictHostKeyChecking=no -i $HOME/secrets/key zen_master@35.187.152.88 "cd postmark-side-project/;npm install"
     - name: run pm2 restart
-      run: pm2 restart postmark-side-project
+      run: ssh -o StrictHostKeyChecking=no -i $HOME/secrets/key zen_master@35.187.152.88 "cd postmark-side-project/;pm2 restart postmark-side-project"
