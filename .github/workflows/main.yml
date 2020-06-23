@@ -19,7 +19,6 @@ jobs:
     - run: pm2 reload postmark-side-project
     - name: decrypt
       run: |
-#        mkdir $HOME/secrets
         gpg --quiet --batch --yes --decrypt --passphrase="$PASSPHRASE" \
         --output $HOME/secrets/key google_compute_engine.gpg
       env:
