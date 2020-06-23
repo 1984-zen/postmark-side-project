@@ -6,13 +6,11 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [10.13.5]
     steps:
     - uses: actions/checkout@v2
-    - name: Run a one-line script
-      run: echo Hello, world!
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '10.13.5'
     - name: decrypt
       run: |
         mkdir $HOME/secrets
@@ -20,16 +18,10 @@ jobs:
         --output $HOME/secrets/key google_compute_engine.gpg
       env:
         PASSPHRASE: ${{ secrets.PASSPHRASE }}
-#    - name: test key
-#      run: ls $HOME/secrets/key
     - name: chmod
       run: chmod 600 $HOME/secrets/key
     - name: ssh
 #      run: ssh -o StrictHostKeyChecking=no -i $HOME/secrets/key zen_master@35.187.152.88 "cd postmark-side-project/;git pull;npm install;pm2 restart postmark-side-project"
       run: ssh -o StrictHostKeyChecking=no -i $HOME/secrets/key zen_master@35.187.152.88 "cd postmark-side-project/;git pull"
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm install
-    - run: pm2 restart postmark-side-project
+      run: npm install
+      run: pm2 restart postmark-side-project
