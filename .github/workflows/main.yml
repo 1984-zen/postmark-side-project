@@ -15,6 +15,10 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: '${{ matrix.node-version }}'
+    - name: run npm install
+      run: snpm install
+    - name: run pm2 restart
+      run: pm2 restart postmark-side-project
     - name: decrypt
       run: |
         mkdir $HOME/secrets
@@ -27,7 +31,3 @@ jobs:
     - name: ssh
 #      run: ssh -o StrictHostKeyChecking=no -i $HOME/secrets/key zen_master@35.187.152.88 "cd postmark-side-project/;git pull;npm install;pm2 restart postmark-side-project"
       run: ssh -o StrictHostKeyChecking=no -i $HOME/secrets/key zen_master@35.187.152.88 "cd postmark-side-project/;git pull"
-    - name: run npm install
-      run: snpm install
-    - name: run pm2 restart
-      run: pm2 restart postmark-side-project
