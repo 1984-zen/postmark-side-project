@@ -6,6 +6,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.13.5]
     steps:
     - uses: actions/checkout@v2
     - name: decrypt
@@ -20,9 +23,9 @@ jobs:
     - name: ssh
 #      run: ssh -o StrictHostKeyChecking=no -i $HOME/secrets/key zen_master@35.187.152.88 "cd postmark-side-project/;git pull;npm install;pm2 restart postmark-side-project"
       run: ssh -o StrictHostKeyChecking=no -i $HOME/secrets/key zen_master@35.187.152.88 "cd postmark-side-project/;git pull"
-    - uses: actions/setup-node@v1
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
       with:
-        node-version: '10.13.5'
-    - name: Use Node.js 10.13.5
-    - run: npm install
-    - run: pm2 restart postmark-side-project
+        node-version: '${{ matrix.node-version }}'
+      run: npm install
+      run: pm2 restart postmark-side-project
