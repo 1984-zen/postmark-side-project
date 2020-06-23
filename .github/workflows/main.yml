@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.x]
+        node-version: [10.15.3]
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
@@ -27,5 +27,4 @@ jobs:
     - name: chmod
       run: chmod 600 $HOME/secrets/key
     - name: ssh
-#      run: ssh -o StrictHostKeyChecking=no -i $HOME/secrets/key zen_master@35.187.152.88 "cd postmark-side-project/;git pull;npm install;pm2 restart postmark-side-project"
       run: ssh -o StrictHostKeyChecking=no -i $HOME/secrets/key zen_master@35.187.152.88 "cd postmark-side-project/;git pull"
