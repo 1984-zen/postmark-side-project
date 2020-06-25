@@ -11,7 +11,6 @@ app.use(bodyParser.json())
 app.use(express.static(__dirname + '/public'));
 app.use('/api', memberRouter)
 
-
 app.listen(app.get('port'), () => {
     console.log(`Listening on port ${app.get('port')}...`)
 })
