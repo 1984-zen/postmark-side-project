@@ -1,10 +1,63 @@
-const { Users } = require("../connection_db");
+const { Users } = require('../connection_db');
+const { onTime } = require('./onTimeModel');
 
+async function checkAccount(payload) {
+    const hasAccount = await Users.findOne({
+        where: {
+            account: payload.account
+        },
+        attributes: ['id']
+    })
+        .then(hasAccount => {
+            if (hasAccount) {
+                return true;
+            } else {
+                return false;
+            }
+        })
+        .catch(err => {
+            let obj = new Error("ORM checkAccount error");
+            obj.status_code = 500;
+            obj.err = err.message;
+            throw obj;
+        })
+    return hasAccount;
+}
+async function regist(payload) {
+    try {
+        registResult = await Users.create({
+            account: payload.account,
+            password: payload.password,
+            name: payload.name,
+            create_time: onTime(),
+            update_time: onTime()
+        })
+            .then(registResult => {
+                return [
+                    {
+                        message: "registed one user",
+                        datas: registResult
+                    },
+                    {
+                        status_code: 201
+                    }
+                ]
+            })
+            .catch(err => {
+                let obj = new Error("ORM regist error");
+                obj.status_code = 500;
+                obj.err = err.message;
+                throw obj;
+            })
+        return registResult;
+    } catch (err) {
+        throw err;
+    }
+}
 async function modifyProfile(payload) {
     try {
         async function modify() {
             if (payload.headImg === false) {
-                console.log('llllll')
                 const isModify = await Users.update(
                     {
                         password: payload.password,
@@ -18,7 +71,6 @@ async function modifyProfile(payload) {
                 )
                 return isModify
             } else {
-                console.log('hhhhh')
                 const isModify = await Users.update(
                     {
                         password: payload.password,
@@ -64,7 +116,7 @@ async function modifyProfile(payload) {
                 obj.err = err.message;
                 throw obj;
             })
-            return result;
+        return result;
     } catch (err) {
         throw err;
     }
@@ -173,5 +225,5 @@ async function profileShow(userID) {
 }
 
 module.exports = {
-    checkLogin, profileShow, getProfile, modifyProfile
+    checkLogin, profileShow, getProfile, modifyProfile, regist, checkAccount
 };
