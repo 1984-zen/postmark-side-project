@@ -31,20 +31,20 @@ module.exports = async function (req, res, next) {
                 status_code: 400
             }
         }
-        const hasAccount = await checkAccount(payload)
-        if (hasAccount === true) {
-            throw {
-                message: {
-                    message: "this account has been registed",
-                },
-                status_code: 400
-            }
-        }
         const checkEmailRegexp = emailRegexp.test(payload.account)
         if (checkEmailRegexp === false) {
             throw {
                 message: {
                     message: "account formate incorrectly, should be email formate",
+                },
+                status_code: 400
+            }
+        }
+        const hasAccount = await checkAccount(payload)
+        if (hasAccount === true) {
+            throw {
+                message: {
+                    message: "this account has been registed",
                 },
                 status_code: 400
             }
