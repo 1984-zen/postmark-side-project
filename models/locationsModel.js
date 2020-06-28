@@ -89,7 +89,7 @@ async function getLocations(townID) {
                         {
                             model: Location_postmarks,
                             on: {
-                                id: sequelize.where(sequelize.col("Locations.location_postmark_id"),
+                                id: sequelize.where(sequelize.col("locations.location_postmark_id"),
                                     "=", sequelize.col("locations.location_postmarks.id"))
                             },
                             attributes: ['id', 'postmark_img'],
