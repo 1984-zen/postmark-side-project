@@ -2,8 +2,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 
-const RsgisterController = require('../controllers/registerController');
-const registerController = new RsgisterController();
+const registAction = require('../controllers/regist');
 const loginAction = require('../controllers/login');
 const indexAction = require('../controllers/index');
 const locationAction = require('../controllers/locations');
@@ -46,7 +45,7 @@ const upload = multer({
     }
 });
 
-router.post     ('/register', registerController.postRegister);
+router.post     ('/regist', registAction.regist);
 router.post     ('/login', loginAction.login);
 router.post     ('/admin/postmarks/', verifyToken.tokenAuth, verifyAdmin.AdminAuth, upload.single('image'), locationAction.createPostmark);
 router.get      ('/index/hot_cities', indexAction.showHotCities);
