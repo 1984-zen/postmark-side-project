@@ -1,7 +1,7 @@
 const { Users } = require('../connection_db')
 
 exports.tokenAuth = async function verifyToken(req, res, next) {
-    const requestToken = req.headers.api_token;
+    const requestToken = req.headers.apiToken;
     if (requestToken === undefined) {
         res.json({
             err: "請輸入api_token！"
