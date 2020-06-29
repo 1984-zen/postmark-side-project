@@ -38,8 +38,6 @@ const Distributes = DistributesModel(sequelize);
 const Towns = TownsModel(sequelize);
 const Collections = CollectionsModel(sequelize);
 
-Locations.hasMany(Location_imgs)
-Location_imgs.belongsTo(Locations)
 Collections.belongsTo(Posts)
 Cities.hasMany(Collections)
 
