@@ -216,14 +216,7 @@ async function checkLogin(payload) {
         throw new Error(err.message);
     }
 }
-async function profileShow(userID) {
-    return Users.findOne({
-        where: {
-            id: userID,
-        },
-    });
-}
 
 module.exports = {
-    checkLogin, profileShow, getProfile, modifyProfile, regist, checkAccount
+    checkLogin, getProfile, modifyProfile, regist, checkAccount
 };
