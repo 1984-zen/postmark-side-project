@@ -2,3 +2,4 @@
 .env
 /public/images/upload
 fukeiin.sql
+/config/config.json
