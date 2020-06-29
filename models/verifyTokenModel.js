@@ -1,10 +1,10 @@
 const { Users } = require('../connection_db')
 
 exports.tokenAuth = async function verifyToken(req, res, next) {
-    const requestToken = req.headers.apiToken;
+    const requestToken = req.headers.apitoken;
     if (requestToken === undefined) {
         res.json({
-            err: "請輸入api_token！"
+            err: "please fill apitoken！"
         })
         return;
     }
@@ -12,8 +12,8 @@ exports.tokenAuth = async function verifyToken(req, res, next) {
     if (checkUser == null) {
         res.json({
             result: {
-                status: "api_token錯誤。",
-                err: "請重新登入。"
+                status: "apitoken incorrectly。",
+                err: "please log in again。"
             }
         })
         return;
