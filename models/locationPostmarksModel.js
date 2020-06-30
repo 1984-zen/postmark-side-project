@@ -1,5 +1,41 @@
 const { Location_postmarks, Locations, sequelize } = require("../connection_db");
+const { onTime } = require('./onTimeModel');
 
+async function careateLocationPostmark(payload) {
+    try {
+        const locationPostmark = await Location_postmarks.create({
+            descrioption: payload.descrioption,
+            postmark_img: payload.imgPath,
+            start_date: payload.startDate,
+            end_date: payload.endDate,
+            remark: payload.remark,
+            author: payload.author,
+            location_id: payload.locationID,
+            create_time: onTime(),
+            update_time: onTime()
+        })
+            .then((locationPostmark) => {
+                return [
+                    {
+                        message: "admin create a location postmark",
+                        datas: locationPostmark
+                    },
+                    {
+                        status_code: 201
+                    }
+                ];
+            })
+            .catch((err) => {
+                let obj = new Error("ORM careateLocationPostmark error");
+                obj.status_code = 500;
+                obj.err = err.message;
+                throw obj;
+            })
+        return locationPostmark;
+    } catch (err) {
+        throw err;
+    }
+}
 async function checkLocationPostmarkID(LocationPostmarkID) {
     try {
         const hasLocationPostmarkID = await Location_postmarks.findOne({
@@ -123,40 +159,8 @@ async function getLocationIntroduce(locationID) {
         throw err;
     }
 }
-async function createPostmarkToDB(payload) {
-    const result = await Location_postmarks.create(
-        {
-            location_id: payload.locationID,
-            start_date: payload.startDate,
-            end_date: payload.endDate,
-            postmark_img: payload.postmarkImg,
-            description: payload.description,
-            remark: payload.remark,
-            postmark_img: payload.imgPath
-        }
-    );
-    if (!result) {
-        return false;
-    } else {
-        return result;
-    }
-}
-async function checkUploadLocationPostmark(payload) {
-    try {
-        const locationDatas = await checkLocationID(locationID = payload.locationID);
-        if (locationDatas === false) {
-            throw new Error("please enter the correct location id");
-        }
-        createResult = await createPostmarkToDB(payload)
-        if (createResult === false) {
-            throw new Error("create postmark to db failed");
-        }
-        return createResult;
-    } catch (err) {
-        throw err;
-    }
-}
 
 module.exports = {
-    checkUploadLocationPostmark, getLocationIntroduce, getLocationPostmarkIntroduce, getLocationPostmarkList, checkLocationPostmarkID
+    getLocationIntroduce, getLocationPostmarkIntroduce, getLocationPostmarkList, checkLocationPostmarkID,
+    careateLocationPostmark
 }
