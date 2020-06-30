@@ -1,6 +1,37 @@
 const { Cities, Towns } = require('../connection_db');
 const { checkCityID } = require('./citiesModel');
+const { onTime } = require('./onTimeModel');
 
+async function createTown(payload) {
+    try {
+        const town = await Towns.create({
+            name: payload.townName,
+            city_id: payload.cityID,
+            create_time: onTime(),
+            update_time: onTime()
+        })
+            .then((town) => {
+                return [
+                    {
+                        message: "admin create a town",
+                        data: town
+                    },
+                    {
+                        status_code: 201
+                    }
+                ];
+            })
+            .catch((err) => {
+                let obj = new Error("ORM createCity error");
+                obj.status_code = 500;
+                obj.err = err;
+                throw obj;
+            })
+        return town;
+    } catch (err) {
+
+    }
+}
 async function checkTownID(townID) {
     try {
         const townDatas = await Towns.findOne({
@@ -64,5 +95,5 @@ async function getTowns(cityID) {
 }
 
 module.exports = {
-    getTowns, checkTownID
+    getTowns, checkTownID, createTown
 }

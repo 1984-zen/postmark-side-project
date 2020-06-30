@@ -63,6 +63,7 @@ router.get      ('/profiles/:id', profileAction.showProfile);
 router.put      ('/profiles/:id', verifyToken.tokenAuth, upload.single('image'), profileAction.updateProfile);
 
 router.post     ('/admin/city', verifyToken.tokenAuth, verifyAdmin.AdminAuth, upload.single('image'), adminAction.createCityByAdmin);
+router.post     ('/admin/town', verifyToken.tokenAuth, verifyAdmin.AdminAuth, adminAction.createTownByAdmin);
 router.post     ('/admin/postmarks/', verifyToken.tokenAuth, verifyAdmin.AdminAuth, upload.single('image'), locationAction.createPostmark);
 
 module.exports = router;
