@@ -1,6 +1,47 @@
 const { Cities, Distributes } = require('../connection_db');
 const { onTime } = require('./onTimeModel');
 
+async function modifyCity(payload) {
+    try {
+        const isUpdate = await Cities.update(
+            {
+                name: payload.cityName,
+                distribute_id: payload.distributeID,
+                city_img: payload.imgPath,
+                update_time: onTime()
+            },
+            {
+                where: {
+                    id: payload.cityID
+                }
+            }
+        )
+            .then(([isUpdate]) => {
+                return [
+                    {
+                        message: "something changed",
+                        datas: {
+                            cityName: payload.cityName,
+                            distributeID: payload.distributeID,
+                            cityImg: payload.imgPath,
+                        }
+                    },
+                    {
+                        status_code: 200
+                    }
+                ]
+            })
+            .catch((err) => {
+                let obj = new Error("ORM modifyCity error");
+                obj.status_code = 500;
+                obj.err = err.message;
+                throw obj;
+            })
+        return isUpdate;
+    } catch (err) {
+        throw err;
+    }
+}
 async function createCity(payload) {
     try {
         const city = await Cities.create({
@@ -11,16 +52,16 @@ async function createCity(payload) {
             update_time: onTime()
         })
             .then((city) => {
-                    return [
-                        {
-                            message: "admin create a city",
-                            datas: city
-                        },
-                        {
-                            status_code: 201
-                        }
-                    ];
-                
+                return [
+                    {
+                        message: "admin create a city",
+                        datas: city
+                    },
+                    {
+                        status_code: 201
+                    }
+                ];
+
             })
             .catch((err) => {
                 let obj = new Error("ORM createCity error");
@@ -112,5 +153,5 @@ async function getHotCities() {
 }
 
 module.exports = {
-    getHotCities, getCities, checkCityID, createCity
+    getHotCities, getCities, checkCityID, createCity, modifyCity
 }

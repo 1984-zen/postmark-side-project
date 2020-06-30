@@ -1,7 +1,53 @@
-const { createCity } = require('../../models/citiesModel');
+const { createCity, modifyCity, checkCityID } = require('../../models/citiesModel');
 const { checkDistribute } = require('../../models/distributesModel');
 const fs = require('fs');
 
+async function updateCityByAdmin(req, res, next) {
+    try {
+        const payload = {
+            cityName: req.body.cityName,
+            distributeID: req.body.distributeID,
+            cityID: req.params.id
+        }
+        const cityImgPath = checkCityImgPath(req.file)
+        if (cityImgPath) {
+            payload.imgPath = cityImgPath
+        }
+        const hasDistributeID = await checkDistribute(payload)
+        if (hasDistributeID === false) {
+            throw {
+                message: {
+                    message: "this distribute id does not exist",
+                },
+                status_code: 400
+            }
+        }
+        const hasCityID = await checkCityID(payload.cityID)
+        if (hasCityID === false) {
+            throw {
+                message: {
+                    message: "this city id does not exist",
+                },
+                status_code: 400
+            }
+        }
+        const [message, status_code] = await modifyCity(payload)
+        res.status(status_code.status_code)
+        res.json({
+            status: "update city successfuly",
+            result: message
+        })
+    } catch (err) {
+        const statusCode = err.status_code;
+        res.status(statusCode)
+        res.json({
+            status: "update city failed",
+            result: err.message,
+            test: err,
+            dev: err.stack
+        })
+    }
+}
 function checkCityImgPath(cityFile) {
     if (!cityFile) {
         return false;
@@ -60,5 +106,5 @@ async function createCityByAdmin(req, res, next) {
 }
 
 module.exports = {
-    createCityByAdmin
+    createCityByAdmin, updateCityByAdmin
 }
