@@ -6,7 +6,7 @@ exports.AdminAuth = async function verifyAdmin(req, res, next) {
     });
     if (checkAdminNull.is_admin === 0) {
         res.json({
-            message: `api_token is not administrator`,
+            message: `apitoken is not administrator`,
             error: {
                 isAdmin: `false`
             }
