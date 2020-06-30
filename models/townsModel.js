@@ -29,7 +29,7 @@ async function createTown(payload) {
             })
         return town;
     } catch (err) {
-
+        throw err;
     }
 }
 async function checkTownID(townID) {
