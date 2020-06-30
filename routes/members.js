@@ -65,6 +65,6 @@ router.put      ('/profiles/:id', verifyToken.tokenAuth, upload.single('image'),
 router.post     ('/admin/city', verifyToken.tokenAuth, verifyAdmin.AdminAuth, upload.single('image'), adminAction.createCityByAdmin);
 router.post     ('/admin/town', verifyToken.tokenAuth, verifyAdmin.AdminAuth, adminAction.createTownByAdmin);
 router.post     ('/admin/location', verifyToken.tokenAuth, verifyAdmin.AdminAuth, adminAction.createLocationByAdmin);
-router.post     ('/admin/postmarks/', verifyToken.tokenAuth, verifyAdmin.AdminAuth, upload.single('image'), locationAction.createPostmark);
+router.post     ('/admin/locations/postmark', verifyToken.tokenAuth, verifyAdmin.AdminAuth, upload.single('image'), adminAction.createLocationPostmarkByAdmin);
 
 module.exports = router;
