@@ -1,5 +1,31 @@
 const { Location_postmarks, Locations, sequelize } = require("../connection_db");
 
+async function checkLocationPostmarkID(LocationPostmarkID) {
+    try {
+        const hasLocationPostmarkID = await Location_postmarks.findOne({
+            where: {
+                id: LocationPostmarkID
+            },
+            attributes: ['id']
+        })
+            .then((hasLocationPostmarkID) => {
+                if (!hasLocationPostmarkID) {
+                    return false;
+                } else {
+                    return hasLocationPostmarkID.dataValues.id;
+                }
+            })
+            .catch((err) => {
+                let obj = new Error("ORM checkLocationPostmarkID error");
+                obj.status_code = 500;
+                obj.err = err.message;
+                throw obj;
+            })
+        return hasLocationPostmarkID;
+    } catch (err) {
+        throw err;
+    }
+}
 async function getLocationPostmarkList(locationID) {
     Locations.hasMany(Location_postmarks, { foreignKey: 'location_id' })
     try {
@@ -132,5 +158,5 @@ async function checkUploadLocationPostmark(payload) {
 }
 
 module.exports = {
-    checkUploadLocationPostmark, getLocationIntroduce, getLocationPostmarkIntroduce, getLocationPostmarkList
+    checkUploadLocationPostmark, getLocationIntroduce, getLocationPostmarkIntroduce, getLocationPostmarkList, checkLocationPostmarkID
 }

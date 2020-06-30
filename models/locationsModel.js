@@ -1,6 +1,40 @@
 const { Locations, Towns, Location_postmarks, sequelize, Posts, User_postmarks } = require('../connection_db');
 const { checkTownID } = require('./townsModel');
+const { onTime } = require('./onTimeModel');
 
+async function createLocation(payload) {
+    try {
+        const location = await Locations.create({
+            name: payload.locationName,
+            address: payload.locationAddress,
+            city_id: payload.cityID,
+            town_id: payload.townID,
+            location_postmark_id: payload.locationPostmarkID,
+            create_time: onTime(),
+            update_time: onTime()
+        })
+            .then((location) => {
+                return [
+                    {
+                        message: "admin create a location",
+                        data: location
+                    },
+                    {
+                        status_code: 201
+                    }
+                ];
+            })
+            .catch((err) => {
+                let obj = new Error("ORM createLocation error");
+                obj.status_code = 500;
+                obj.err = err;
+                throw obj;
+            })
+        return location;
+    } catch (err) {
+        throw err;
+    }
+}
 async function getLocationPosts(locationID) {
     try {
         const posts = await Locations.findAll({
@@ -118,5 +152,5 @@ async function getLocations(townID) {
 }
 
 module.exports = {
-    getLocations, checkLocationID, getLocationPosts
+    getLocations, checkLocationID, getLocationPosts, createLocation
 }
