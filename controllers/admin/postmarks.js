@@ -1,7 +1,36 @@
-const { careateLocationPostmark, checkLocationPostmarkID, modifyLocationPostmark } = require('../../models/locationPostmarksModel');
+const { careateLocationPostmark, checkLocationPostmarkID, modifyLocationPostmark, destroyLocationPostmark } = require('../../models/locationPostmarksModel');
 const { checkLocationID } = require('../../models/locationsModel');
 const fs = require('fs');
 
+async function deleteLocationPostmarkByAdmin(req, res, next) {
+    try {
+        const locationPostmarkID = req.params.id;
+        const hasLocationPostmarkID = await checkLocationPostmarkID(locationPostmarkID)
+        if (hasLocationPostmarkID === false) {
+            throw {
+                message: {
+                    message: "this location postmark id does not exist",
+                },
+                status_code: 400
+            }
+        }
+        const [message, status_code] = await destroyLocationPostmark(locationPostmarkID);
+        res.status(status_code.status_code)
+        res.json({
+            status: "delete location postmark successfuly",
+            result: message
+        })
+    } catch (err) {
+        const statusCode = err.status_code;
+        res.status(statusCode)
+        res.json({
+            status: "delete location postmark failed",
+            result: err.message,
+            test: err,
+            dev: err.stack
+        })
+    }
+}
 async function updateLocationPostmarkByAdmin(req, res, next) {
     try {
         let payload = {
@@ -120,5 +149,5 @@ async function createLocationPostmarkByAdmin(req, res, next) {
 }
 
 module.exports = {
-    createLocationPostmarkByAdmin, updateLocationPostmarkByAdmin
+    createLocationPostmarkByAdmin, updateLocationPostmarkByAdmin, deleteLocationPostmarkByAdmin
 }
