@@ -1,6 +1,29 @@
 const { Location_postmarks, Locations, sequelize } = require("../connection_db");
 const { onTime } = require('./onTimeModel');
 
+async function destroyLocationPostmark(locationPostmarkID) {
+    try {
+        const isDelete = await Location_postmarks.destroy({
+            where: {
+                id: locationPostmarkID
+            }
+        })
+            .then((isDelete) => {
+                return [
+                    {
+                        message: "one location postmark has been deleted",
+                        location_postmark_id: locationPostmarkID
+                    },
+                    {
+                        status_code: 200
+                    }
+                ]
+            })
+        return isDelete;
+    } catch (err) {
+        throw err;
+    }
+}
 async function modifyLocationPostmark(payload) {
     try {
         console.log(payload.locationPostmarkID)
@@ -211,5 +234,5 @@ async function getLocationIntroduce(locationID) {
 
 module.exports = {
     getLocationIntroduce, getLocationPostmarkIntroduce, getLocationPostmarkList, checkLocationPostmarkID,
-    careateLocationPostmark, modifyLocationPostmark
+    careateLocationPostmark, modifyLocationPostmark, destroyLocationPostmark
 }
