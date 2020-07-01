@@ -2,6 +2,50 @@ const { Locations, Towns, Location_postmarks, sequelize, Posts, User_postmarks }
 const { checkTownID } = require('./townsModel');
 const { onTime } = require('./onTimeModel');
 
+async function modifyLocation(payload) {
+    try {
+        const isUpdate = await Locations.update(
+            {
+                name: payload.locationName,
+                address: payload.locationAddress,
+                city_id: payload.cityID,
+                town_id: payload.townID,
+                location_postmark_id: payload.locationPostmarkID
+            },
+            {
+                where: {
+                    id: payload.locationID
+                }
+            }
+        )
+            .then(([isUpdate]) => {
+                return [
+                    {
+                        message: "something changed",
+                        datas: {
+                            locationName: payload.locationName,
+                            locationAddress: payload.locationAddress,
+                            cityID: payload.cityID,
+                            townID: payload.townID,
+                            locationPostmarkID: payload.locationPostmarkID
+                        }
+                    },
+                    {
+                        status_code: 200
+                    }
+                ]
+            })
+            .catch((err) => {
+                let obj = new Error("ORM modifyLocation error");
+                obj.status_code = 500;
+                obj.err = err.message;
+                throw obj;
+            })
+        return isUpdate;
+    } catch (err) {
+        throw err;
+    }
+}
 async function createLocation(payload) {
     try {
         const location = await Locations.create({
@@ -92,9 +136,9 @@ async function checkLocationID(locationID) {
                 }
             })
             .catch((err) => {
-                let obj = new Error("ORM error");
+                let obj = new Error("ORM checkLocationID error");
                 obj.status_code = 500;
-                obj.err = err;
+                obj.err = err.message;
                 throw obj;
             })
         return locationDatas;
@@ -152,5 +196,5 @@ async function getLocations(townID) {
 }
 
 module.exports = {
-    getLocations, checkLocationID, getLocationPosts, createLocation
+    getLocations, checkLocationID, getLocationPosts, createLocation, modifyLocation
 }
