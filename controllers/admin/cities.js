@@ -1,7 +1,36 @@
-const { createCity, modifyCity, checkCityID } = require('../../models/citiesModel');
+const { createCity, modifyCity, checkCityID, destroyCity } = require('../../models/citiesModel');
 const { checkDistribute } = require('../../models/distributesModel');
 const fs = require('fs');
 
+async function deleteCityByAdmin(req, res, next) {
+    try {
+        const cityID = req.params.id;
+        const hasCityID = await checkCityID(cityID)
+        if (hasCityID === false) {
+            throw {
+                message: {
+                    message: "this city id does not exist",
+                },
+                status_code: 400
+            }
+        }
+        const [message, status_code] = await destroyCity(cityID);
+        res.status(status_code.status_code)
+        res.json({
+            status: "delete city successfuly",
+            result: message
+        })
+    } catch (err) {
+        const statusCode = err.status_code;
+        res.status(statusCode)
+        res.json({
+            status: "delete city failed",
+            result: err.message,
+            test: err,
+            dev: err.stack
+        })
+    }
+}
 async function updateCityByAdmin(req, res, next) {
     try {
         const payload = {
@@ -106,5 +135,5 @@ async function createCityByAdmin(req, res, next) {
 }
 
 module.exports = {
-    createCityByAdmin, updateCityByAdmin
+    createCityByAdmin, updateCityByAdmin, deleteCityByAdmin
 }
