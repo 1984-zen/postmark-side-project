@@ -1,8 +1,9 @@
 const { createCityByAdmin, updateCityByAdmin } = require('./cities');
-const { createTownByAdmin } = require('./towns');
+const { createTownByAdmin, updateTownByAdmin } = require('./towns');
 const { createLocationByAdmin } = require('./locations');
 const { createLocationPostmarkByAdmin } = require('./postmarks');
 
 module.exports = {
-    createCityByAdmin, createTownByAdmin, createLocationByAdmin, createLocationPostmarkByAdmin, updateCityByAdmin
+    createCityByAdmin, createTownByAdmin, createLocationByAdmin, createLocationPostmarkByAdmin, updateCityByAdmin,
+    updateTownByAdmin
 }
