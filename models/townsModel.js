@@ -2,6 +2,29 @@ const { Cities, Towns } = require('../connection_db');
 const { checkCityID } = require('./citiesModel');
 const { onTime } = require('./onTimeModel');
 
+async function destroyTown(townID) {
+    try {
+        const isDelete = await Towns.destroy({
+            where: {
+                id: townID
+            }
+        })
+            .then((isDelete) => {
+                return [
+                    {
+                        message: "one town has been deleted",
+                        town_id: townID
+                    },
+                    {
+                        status_code: 200
+                    }
+                ]
+            })
+        return isDelete;
+    } catch (err) {
+        throw err;
+    }
+}
 async function modifyTown(payload) {
     try {
         const isUpdate = await Towns.update(
@@ -134,5 +157,5 @@ async function getTowns(cityID) {
 }
 
 module.exports = {
-    getTowns, checkTownID, createTown, modifyTown
+    getTowns, checkTownID, createTown, modifyTown, destroyTown
 }
