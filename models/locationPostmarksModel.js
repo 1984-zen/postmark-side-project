@@ -26,7 +26,6 @@ async function destroyLocationPostmark(locationPostmarkID) {
 }
 async function modifyLocationPostmark(payload) {
     try {
-        console.log(payload.locationPostmarkID)
         const isUpdate = await Location_postmarks.update(
             {
                 description: payload.description,

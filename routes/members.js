@@ -72,7 +72,7 @@ router.post     ('/admin/location', verifyToken.tokenAuth, verifyAdmin.AdminAuth
 router.put      ('/admin/location/:id', verifyToken.tokenAuth, verifyAdmin.AdminAuth, adminAction.updateLocationByAdmin);
 router.delete   ('/admin/location/:id', verifyToken.tokenAuth, verifyAdmin.AdminAuth, adminAction.deleteLocationByAdmin);
 router.post     ('/admin/locations/postmark', verifyToken.tokenAuth, verifyAdmin.AdminAuth, upload.single('image'), adminAction.createLocationPostmarkByAdmin);
-router.put      ('/admin/locations/:location_id/postmark/:postmark_id', verifyToken.tokenAuth, verifyAdmin.AdminAuth, upload.single('image'), adminAction.updateLocationPostmarkByAdmin);
+router.put      ('/admin/postmark/:id', verifyToken.tokenAuth, verifyAdmin.AdminAuth, upload.single('image'), adminAction.updateLocationPostmarkByAdmin);
 router.delete   ('/admin/postmark/:id', verifyToken.tokenAuth, verifyAdmin.AdminAuth, upload.single('image'), adminAction.deleteLocationPostmarkByAdmin);
 
 module.exports = router;
