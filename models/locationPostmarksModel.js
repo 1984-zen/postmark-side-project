@@ -1,6 +1,55 @@
 const { Location_postmarks, Locations, sequelize } = require("../connection_db");
 const { onTime } = require('./onTimeModel');
 
+async function modifyLocationPostmark(payload) {
+    try {
+        console.log(payload.locationPostmarkID)
+        const isUpdate = await Location_postmarks.update(
+            {
+                description: payload.description,
+                postmark_img: payload.imgPath,
+                start_date: payload.startDate,
+                end_date: payload.endDate,
+                remark: payload.remark,
+                author: payload.author,
+                location_id: payload.locationID
+            },
+            {
+                where: {
+                    id: payload.locationPostmarkID
+                }
+            }
+        )
+            .then(([isUpdate]) => {
+                return [
+                    {
+                        message: "something changed",
+                        datas: {
+                            description: payload.description,
+                            postmarkImg: payload.imgPath,
+                            startDate: payload.startDate,
+                            endDate: payload.endDate,
+                            remark: payload.remark,
+                            author: payload.author,
+                            locationID: payload.locationID
+                        }
+                    },
+                    {
+                        status_code: 200
+                    }
+                ]
+            })
+            .catch((err) => {
+                let obj = new Error("ORM modifyLocationPostmark error");
+                obj.status_code = 500;
+                obj.err = err.message;
+                throw obj;
+            })
+        return isUpdate;
+    } catch (err) {
+        throw err;
+    }
+}
 async function careateLocationPostmark(payload) {
     try {
         const locationPostmark = await Location_postmarks.create({
@@ -162,5 +211,5 @@ async function getLocationIntroduce(locationID) {
 
 module.exports = {
     getLocationIntroduce, getLocationPostmarkIntroduce, getLocationPostmarkList, checkLocationPostmarkID,
-    careateLocationPostmark
+    careateLocationPostmark, modifyLocationPostmark
 }
