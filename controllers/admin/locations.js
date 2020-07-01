@@ -1,8 +1,37 @@
 const { checkCityID } = require("../../models/citiesModel");
 const { checkTownID } = require("../../models/townsModel");
-const { createLocation, checkLocationID, modifyLocation } = require('../../models/locationsModel');
+const { createLocation, checkLocationID, modifyLocation, destroyLocation } = require('../../models/locationsModel');
 const { checkLocationPostmarkID } = require('../../models/locationPostmarksModel');
 
+async function deleteLocationByAdmin(req, res, next) {
+    try {
+        const locationID = req.params.id;
+        const hasLocationID = await checkLocationID(locationID)
+        if (hasLocationID === false) {
+            throw {
+                message: {
+                    message: "this location id does not exist",
+                },
+                status_code: 400
+            }
+        }
+        const [message, status_code] = await destroyLocation(locationID);
+        res.status(status_code.status_code)
+        res.json({
+            status: "delete location successfuly",
+            result: message
+        })
+    } catch (err) {
+        const statusCode = err.status_code;
+        res.status(statusCode)
+        res.json({
+            status: "delete location failed",
+            result: err.message,
+            test: err,
+            dev: err.stack
+        })
+    }
+}
 async function updateLocationByAdmin(req, res, next) {
     try {
         let payload = {
@@ -135,5 +164,5 @@ async function createLocationByAdmin(req, res, next) {
 }
 
 module.exports = {
-    createLocationByAdmin, createLocationByAdmin, updateLocationByAdmin
+    createLocationByAdmin, createLocationByAdmin, updateLocationByAdmin, deleteLocationByAdmin
 }
