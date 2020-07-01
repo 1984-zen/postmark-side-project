@@ -2,6 +2,45 @@ const { Cities, Towns } = require('../connection_db');
 const { checkCityID } = require('./citiesModel');
 const { onTime } = require('./onTimeModel');
 
+async function modifyTown(payload) {
+    try {
+        const isUpdate = await Towns.update(
+            {
+                name: payload.townName,
+                city_id: payload.cityID,
+                update_time: onTime()
+            },
+            {
+                where: {
+                    id: payload.townID
+                }
+            }
+        )
+            .then(([isUpdate]) => {
+                return [
+                    {
+                        message: "something changed",
+                        datas: {
+                            townName: payload.townName,
+                            cityID: payload.cityID
+                        }
+                    },
+                    {
+                        status_code: 200
+                    }
+                ]
+            })
+            .catch((err) => {
+                let obj = new Error("ORM modifyTown error");
+                obj.status_code = 500;
+                obj.err = err.message;
+                throw obj;
+            })
+        return isUpdate;
+    } catch (err) {
+        throw err;
+    }
+}
 async function createTown(payload) {
     try {
         const town = await Towns.create({
@@ -47,7 +86,7 @@ async function checkTownID(townID) {
                 }
             })
             .catch((err) => {
-                let obj = new Error("ORM error");
+                let obj = new Error("ORM checkTownID error");
                 obj.status_code = 500;
                 obj.err = err;
                 throw obj;
@@ -95,5 +134,5 @@ async function getTowns(cityID) {
 }
 
 module.exports = {
-    getTowns, checkTownID, createTown
+    getTowns, checkTownID, createTown, modifyTown
 }
