@@ -39,8 +39,8 @@ async function updateLocationPostmarkByAdmin(req, res, next) {
             endDate: req.body.endDate,
             remark: req.body.remark,
             author: req.body.author,
-            locationID: req.params.location_id,
-            locationPostmarkID: req.params.postmark_id
+            locationID: req.body.locationID,
+            locationPostmarkID: req.params.id
         }
         const locationPostmarkImgPath = checkLocationPostmarkImgPath(req.file)
         if (locationPostmarkImgPath) {
