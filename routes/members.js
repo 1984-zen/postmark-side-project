@@ -64,6 +64,7 @@ router.put      ('/profiles/:id', verifyToken.tokenAuth, upload.single('image'),
 
 router.post     ('/admin/city', verifyToken.tokenAuth, verifyAdmin.AdminAuth, upload.single('image'), adminAction.createCityByAdmin);
 router.put      ('/admin/city/:id', verifyToken.tokenAuth, verifyAdmin.AdminAuth, upload.single('image'), adminAction.updateCityByAdmin);
+router.delete   ('/admin/city/:id', verifyToken.tokenAuth, verifyAdmin.AdminAuth, upload.single('image'), adminAction.deleteCityByAdmin);
 router.post     ('/admin/town', verifyToken.tokenAuth, verifyAdmin.AdminAuth, adminAction.createTownByAdmin);
 router.put      ('/admin/town/:id', verifyToken.tokenAuth, verifyAdmin.AdminAuth, adminAction.updateTownByAdmin);
 router.post     ('/admin/location', verifyToken.tokenAuth, verifyAdmin.AdminAuth, adminAction.createLocationByAdmin);
