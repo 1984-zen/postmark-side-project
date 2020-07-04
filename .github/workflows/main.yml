@@ -19,4 +19,4 @@ jobs:
       run: chmod 600 $HOME/secrets/key
     - name: ssh
 #      run: ssh -o StrictHostKeyChecking=no -i $HOME/secrets/key zen_master@35.187.152.88 "cd postmark-side-project/;git pull;sudo /home/zen_master/.nvm/versions/node/v10.15.3/bin/npm install;sudo /home/zen_master/.nvm/versions/node/v10.15.3/bin/pm2 reload ecosystem.config.js"
-      run: ssh -o StrictHostKeyChecking=no -i $HOME/secrets/key zen_master@35.187.152.88 -tt "bash -l -c "cd postmark-side-project/;which pm2;/usr/bin/git pull;sudo npm install;bash""
+      run: ssh -o StrictHostKeyChecking=no -i $HOME/secrets/key zen_master@35.187.152.88 -tt "bash -l -c "cd postmark-side-project/;sudo /usr/bin/git pull;sudo npm install;bash""
