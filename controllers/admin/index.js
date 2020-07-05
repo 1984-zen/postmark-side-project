@@ -1,3 +1,4 @@
+const { createDistributeByAdmin } = require('./distributes');
 const { createCityByAdmin, updateCityByAdmin, deleteCityByAdmin } = require('./cities');
 const { createTownByAdmin, updateTownByAdmin, deleteTownByAdmin } = require('./towns');
 const { createLocationByAdmin, updateLocationByAdmin, deleteLocationByAdmin } = require('./locations');
@@ -6,5 +7,5 @@ const { createLocationPostmarkByAdmin, updateLocationPostmarkByAdmin, deleteLoca
 module.exports = {
     createCityByAdmin, createTownByAdmin, createLocationByAdmin, createLocationPostmarkByAdmin, updateCityByAdmin,
     updateTownByAdmin, updateLocationByAdmin, updateLocationPostmarkByAdmin, deleteCityByAdmin, deleteTownByAdmin,
-    deleteLocationByAdmin, deleteLocationPostmarkByAdmin
+    deleteLocationByAdmin, deleteLocationPostmarkByAdmin, createDistributeByAdmin
 }
