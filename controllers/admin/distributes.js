@@ -37,6 +37,14 @@ async function createDistributeByAdmin(req, res, next) {
         const payload = {
             distributeName: req.body.distributeName,
         }
+        if (payload.distributeName === undefined) {
+            throw {
+                message: {
+                    message: "please fill distributeName",
+                },
+                status_code: 400
+            }
+        }
         const [message, status_code] = await createDistribute(payload);
         res.status(status_code.status_code)
         res.json({
