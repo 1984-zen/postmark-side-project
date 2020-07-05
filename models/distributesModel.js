@@ -1,6 +1,43 @@
 const { Distributes } = require('../connection_db');
 const { onTime } = require('./onTimeModel');
 
+async function modifyDistribute(payload) {
+    try {
+        const isUpdate = await Distributes.update(
+            {
+                name: payload.distributeName,
+                update_time: onTime()
+            },
+            {
+                where: {
+                    id: payload.distributeID
+                }
+            }
+        )
+            .then(([isUpdate]) => {
+                return [
+                    {
+                        message: "something changed",
+                        datas: {
+                            distributeName: payload.distributeName,
+                        }
+                    },
+                    {
+                        status_code: 200
+                    }
+                ]
+            })
+            .catch((err) => {
+                let obj = new Error("ORM modifyDistribute error");
+                obj.status_code = 500;
+                obj.err = err.message;
+                throw obj;
+            })
+        return isUpdate;
+    } catch (err) {
+        throw err;
+    }
+}
 async function createDistribute(payload) {
     try {
         const distribute = await Distributes.create({
@@ -31,7 +68,7 @@ async function createDistribute(payload) {
         throw err;
     }
 }
-async function checkDistribute(payload) {
+async function checkDistributeID(payload) {
     hasDistributeID = await Distributes.findOne({
         where: {
             id: payload.distributeID
@@ -49,5 +86,5 @@ async function checkDistribute(payload) {
 }
 
 module.exports = {
-    checkDistribute, createDistribute
+    checkDistributeID, createDistribute, modifyDistribute
 }

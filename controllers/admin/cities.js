@@ -1,5 +1,5 @@
 const { createCity, modifyCity, checkCityID, destroyCity } = require('../../models/citiesModel');
-const { checkDistribute } = require('../../models/distributesModel');
+const { checkDistributeID } = require('../../models/distributesModel');
 const fs = require('fs');
 
 async function deleteCityByAdmin(req, res, next) {
@@ -42,7 +42,7 @@ async function updateCityByAdmin(req, res, next) {
         if (cityImgPath) {
             payload.imgPath = cityImgPath
         }
-        const hasDistributeID = await checkDistribute(payload)
+        const hasDistributeID = await checkDistributeID(payload)
         if (hasDistributeID === false) {
             throw {
                 message: {
@@ -107,7 +107,7 @@ async function createCityByAdmin(req, res, next) {
                 status_code: 400
             }
         }
-        const hasDistributeID = await checkDistribute(payload)
+        const hasDistributeID = await checkDistributeID(payload)
         if (hasDistributeID === false) {
             throw {
                 message: {
