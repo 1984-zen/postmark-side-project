@@ -1,6 +1,29 @@
 const { Distributes } = require('../connection_db');
 const { onTime } = require('./onTimeModel');
 
+async function destroyDistribute(payload) {
+    try {
+        const isDelete = await Distributes.destroy({
+            where: {
+                id: payload.distributeID
+            }
+        })
+            .then((isDelete) => {
+                return [
+                    {
+                        message: "one distribute has been deleted",
+                        city_id: payload.distributeID
+                    },
+                    {
+                        status_code: 200
+                    }
+                ]
+            })
+        return isDelete;
+    } catch (err) {
+        throw err;
+    }
+}
 async function modifyDistribute(payload) {
     try {
         const isUpdate = await Distributes.update(
@@ -86,5 +109,5 @@ async function checkDistributeID(payload) {
 }
 
 module.exports = {
-    checkDistributeID, createDistribute, modifyDistribute
+    checkDistributeID, createDistribute, modifyDistribute, destroyDistribute
 }
