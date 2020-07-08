@@ -23,6 +23,6 @@ jobs:
 #      run: ssh -o StrictHostKeyChecking=no -i $HOME/secrets/key zen_master@35.187.152.88 -tt "bash -l -c "cd test2/postmark-side-project/;git pull;bash"" # Warning: Permanently added '35.187.152.88' (ECDSA) to the list of known hosts.
 #      run: ssh -o StrictHostKeyChecking=no -i $HOME/secrets/key zen_master@35.187.152.88 "export PATH=$PATH:/home/zen_master/.nvm/versions/node/v10.15.3/bin;source /home/zen_master/.bashrc;echo $PATH"     
 #      run: ssh -o StrictHostKeyChecking=no -i $HOME/secrets/key zen_master@35.187.152.88 "cd test2/postmark-side-project/;git pull"
-    - name: which npm
-      run: ssh -o StrictHostKeyChecking=no -i $HOME/secrets/key zen_master@35.187.152.88 -tt "bash -l -c 'echo $PATH'"
+    - name: su - zen_master and echo $PATH
+      run: ssh -o StrictHostKeyChecking=no -i $HOME/secrets/key zen_master@35.187.152.88 -tt "bash -l -c 'sudo su - zen_master;echo $PATH'"
       
