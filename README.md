@@ -21,8 +21,12 @@ $ cd postmark-side-project
 ```
 $ npm install
 ```
+3. To migrate schema
+```
+$ npx sequelize db:migrate
+```
 #### Start a seerver
-3. This project defalt listen 3000 port, run:
+4. This project defalt listen 3000 port, run:
 ```
 $ npm start
 ```
