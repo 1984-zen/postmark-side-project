@@ -2,7 +2,7 @@
 ## API online Demo:
 https://zencoding.buzz/api/{replace "end point" here, please check API document below}
 ## Desciption
-日本郵局直徑36mm以內的戳印， 刻畫著當下時分的當地風情活動，<br />
+這個專案的目的是要讓使用者可以手機拍照自行上傳自己蓋的風景印，還可以收藏別人蓋的風景印，集結同好互相交流以及完整收集所有的日本風勁印<br />
 ## API document線上文件說明：
 https://hackmd.io/xlRPaA4MQvuW8BQrCL2sOQ?both
 #### Backend: 
