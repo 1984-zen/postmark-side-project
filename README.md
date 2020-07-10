@@ -1,7 +1,10 @@
-# Fukeiin日本風景印api
+# Fukeiin日本風景印API
+## API online Demo:
+https://zencoding.buzz/api/{replace "end point" here, please check API document below}
 ## Desciption
-日本郵局直徑36mm以內的戳印， 刻畫著當下時分的當地風情活動<br />
-
+日本郵局直徑36mm以內的戳印， 刻畫著當下時分的當地風情活動，<br />
+## API document線上文件說明：
+https://hackmd.io/xlRPaA4MQvuW8BQrCL2sOQ?both
 #### Backend: 
 - Node.JS - version 10.13.5 up
 - Express - version 4.17.1
