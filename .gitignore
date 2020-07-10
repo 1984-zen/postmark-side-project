@@ -1,5 +1,6 @@
 /node_modules
 .env
-/public/images/upload
+/public/images/upload/
 fukeiin.sql
 /config/config.json
+/.DS_Store
