@@ -45,20 +45,19 @@ async function showLocationPostmarkList(req, res, next) {
 async function showLocationPostmarkIntroduce(req, res, next) {
     try {
         const postmarkID = req.params.id;
-        const postmarkIntroduceResult = await getLocationPostmarkIntroduce(postmarkID);
-        const statusCode = postmarkIntroduceResult.pop().status_code;
-        res.status(statusCode)
+        const [message, status_code] = await getLocationPostmarkIntroduce(postmarkID);
+        res.status(status_code.status_code)
         res.json({
             status: "get location postmark introduce successfully",
-            result: postmarkIntroduceResult
+            result: message
         })
     } catch (err) {
+        const statusCode = err.status_code;
+        res.status(statusCode)
         res.json({
             status: "get location postmark introduce failed",
             result: err.message
         })
-        const statusCode = err.status_code;
-        res.status(statusCode)
     }
 }
 

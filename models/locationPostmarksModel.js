@@ -167,15 +167,16 @@ async function getLocationPostmarkIntroduce(postmarkID) {
             },
             attributes: ['id', 'description', 'postmark_img', 'start_date', 'end_date', 'remark', 'author']
         })
-            .then((postmarkDatas) => {
-                if (!postmarkDatas) {
-                    return false;
-                } else {
-                    let obj = {};
-                    obj['status_code'] = 200;
-                    postmarkDatas.push(obj)
-                    return postmarkDatas;
-                }
+            .then(([postmarkDatas]) => {
+                return [
+                    {
+                        message: "get location postmark introduce",
+                        datas: postmarkDatas
+                    },
+                    {
+                        status_code: 200
+                    }
+                ]
             })
             .catch((err) => {
                 let obj = new Error("ORM error");
@@ -185,7 +186,7 @@ async function getLocationPostmarkIntroduce(postmarkID) {
             })
         return postmarkDatas;
     } catch (err) {
-
+        throw err;
     }
 }
 async function getLocationIntroduce(locationID) {
