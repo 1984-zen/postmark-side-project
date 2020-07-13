@@ -25,12 +25,20 @@ $ cd postmark-side-project
 ```
 $ npm install
 ```
-3. To migrate schema
+3. set your database connection
+```
+mv .env.example .env
+// then fill up your database connection infomation
+$ cd confing
+$ mv config.json.example config.json
+// then fill up your database connection infomation
+```
+4. To migrate schema
 ```
 $ npx sequelize db:migrate
 ```
 #### Start a seerver
-4. This project defalt listen 3000 port, run:
+5. This project defalt listen 3000 port, run:
 ```
 $ npm start
 ```
