@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const config = require('./config/development_config');
+const config = require('./config/config.json');
 const UserModel = require('./ORMmodels/users');
 const StampModel = require('./ORMmodels/stamps');
 const PostModel = require('./ORMmodels/posts');
@@ -14,8 +14,8 @@ const TownsModel = require('./ORMmodels/towns');
 const CollectionsModel = require('./ORMmodels/collections');
 
 const sequelize = new Sequelize({
-  database: config.mysql.database, username: config.mysql.user, password: config.mysql.password,
-  host: config.mysql.host,
+  database: config.development.database, username: config.development.username, password: config.development.password,
+  host: config.development.host,
   dialect: 'mysql',
   pool: {
     max: 10,

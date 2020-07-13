@@ -27,8 +27,6 @@ $ npm install
 ```
 3. set your database connection
 ```
-mv .env.example .env
-// then fill up your database connection infomation
 $ cd confing
 $ mv config.json.example config.json
 // then fill up your database connection infomation
