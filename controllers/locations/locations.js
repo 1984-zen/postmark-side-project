@@ -14,7 +14,6 @@ async function showLocationIntroduce(req, res, next) {
             }
         }
         const [message, status_code] = await getLocationIntroduce(locationID);
-        // const statusCode = LocationIntroduce.pop().status_code;
         res.status(status_code.status_code)
         res.json({
             status: "get location introduce successfully",
@@ -27,7 +26,6 @@ async function showLocationIntroduce(req, res, next) {
             status: "get location introduce failed",
             result: err.message
         })
-        console.log(err.stack)
     }
 }
 async function showLocations(req, res, next) {

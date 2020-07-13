@@ -24,7 +24,7 @@ async function showLocationPostmarkList(req, res, next) {
                     datas: locationPostmarkList
                 },
                 {
-                    status_code: 202
+                    status_code: 200
                 }
             ]
         })
@@ -40,7 +40,6 @@ async function showLocationPostmarkList(req, res, next) {
             status: "get location postmarks list failed",
             result: err.message
         })
-        console.log(err.stack)
     }
 }
 async function showLocationPostmarkIntroduce(req, res, next) {
