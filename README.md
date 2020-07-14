@@ -1,7 +1,7 @@
 ![](https://github.com/1984-zen/postmark-side-project/blob/dev/public/postmark-side-project-screen_shoot.gif)
 # Fukeiin日本風景印API
 ## API online Demo:
-https://zencoding.buzz/api/{replace "end point" here, please check API document below}
+https://zencoding.buzz/ {replace end point here, please check API document below}
 ## Desciption
 這個專案的目的是要讓使用者可以手機拍照自行上傳自己蓋的風景印，還可以收藏別人蓋的風景印，集結同好互相交流以及完整收集所有的日本風勁印<br />
 ## API document線上文件說明：
@@ -29,7 +29,7 @@ $ npm install
 ```
 $ cd confing
 $ mv config.json.example config.json
-// then fill up your database connection infomation
+// Fill up your mySQL connection in config.json file
 ```
 4. To migrate schema
 ```
