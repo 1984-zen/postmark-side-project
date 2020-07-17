@@ -1,9 +1,10 @@
 const { checkAccount, regist } = require('../../models/usersModel');
+const crypto = require('crypto');
 
 module.exports = async function (req, res, next) {
     try {
         const emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-        const payload = {
+        let payload = {
             account: req.body.account,
             password: req.body.password,
             rePassword: req.body.rePassword,
@@ -49,6 +50,11 @@ module.exports = async function (req, res, next) {
                 status_code: 400
             }
         }
+        let hashPassword = crypto.createHash('sha1');
+        hashPassword.update(payload.password);
+        hashPassword = hashPassword.digest('hex');
+        //update payload.password
+        payload.password = hashPassword;
         const [message, status_code] = await regist(payload)
         res.status(status_code.status_code)
         res.json({
