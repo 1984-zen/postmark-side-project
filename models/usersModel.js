@@ -167,24 +167,14 @@ async function checkUser(payload) {
         return userDatas.dataValues.id;
     }
 }
-function makeToken(length) {
-    let result = "";
-    let characters =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let charactersLength = characters.length;
-    for (let i = 0; i < length; i++) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
-}
-async function updateUserToken(updatePayload) {
+async function updateUserToken(payload) {
     const result = await Users.update(
         {
-            api_token: updatePayload.api_token,
+            api_token: payload.api_token,
         },
         {
             where: {
-                id: updatePayload.userID,
+                id: payload.userID,
             },
         }
     );
@@ -196,27 +186,36 @@ async function updateUserToken(updatePayload) {
 }
 async function checkLogin(payload) {
     try {
-        const hasUser = await checkUser(payload);
-        if (hasUser === false) {
-            throw new Error("account or password incorrected");
-        }
-        const api_token = makeToken(20);
-        const updatePayload = {
-            userID: hasUser,
-            api_token: api_token,
-        };
-        const updateResult = await updateUserToken(updatePayload);
-        if (updateResult === false) {
-            throw new Error("update user api_token faliled");
-        }
-        const result = await Users.findOne({ where: { id: updatePayload.userID } });
+        const result = await Users.findOne(
+            {
+                where: {
+                    id: payload.userID
+                },
+                attributes: ['id', 'account', 'api_token', 'name', 'head_img']
+            })
+            .then(result => {
+                return [
+                    {
+                        message: "one user login successfully",
+                        datas: result
+                    },
+                    {
+                        status_code: 200
+                    }
+                ]
+            })
+            .catch(err => {
+                let obj = new Error("ORM login error");
+                obj.status_code = 500;
+                obj.err = err.message;
+                throw obj;
+            })
         return result;
     } catch (err) {
-        console.log("===post user login was error: ", err);
-        throw new Error(err.message);
+        throw err;
     }
 }
 
 module.exports = {
-    checkLogin, getProfile, modifyProfile, regist, checkAccount
+    checkLogin, getProfile, modifyProfile, regist, checkAccount, checkUser, updateUserToken
 };
