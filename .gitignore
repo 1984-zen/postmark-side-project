@@ -4,3 +4,6 @@ fukeiin.sql
 /config/config.json
 /.DS_Store
 public/.DS_Store
+models/logs/debug.txt
+models/logs/error.txt
+models/logs/info.txt

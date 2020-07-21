@@ -1,6 +1,7 @@
 const { checkLogin, checkUser, updateUserToken } = require('../../models/usersModel');
 const crypto = require('crypto');
 const makeToken = require('../../models/makeTokenModel');
+var logger = require("../../models/logger");
 
 module.exports = async function (req, res, next) {
     try {
@@ -8,12 +9,6 @@ module.exports = async function (req, res, next) {
             account: req.body.account,
             password: null,
         };
-        //hash password
-        let hashPassword = crypto.createHash('sha1');
-        hashPassword.update(req.body.password);
-        hashPassword = hashPassword.digest('hex');
-        //update payload.password
-        payload.password = hashPassword;
         if (payload.account === undefined || payload.password === undefined) {
             throw {
                 message: {
@@ -22,6 +17,12 @@ module.exports = async function (req, res, next) {
                 status_code: 400
             }
         }
+        //hash password
+        let hashPassword = crypto.createHash('sha1');
+        hashPassword.update(req.body.password);
+        hashPassword = hashPassword.digest('hex');
+        //update payload.password
+        payload.password = hashPassword;
         const hasUser = await checkUser(payload);
         if (hasUser === false) {
             throw {
@@ -58,5 +59,12 @@ module.exports = async function (req, res, next) {
             status: "login failed",
             result: err.message,
         });
+        logger.err(JSON.stringify({
+            status_code: err.status_code,
+            err_message: `login failed`,
+            err_reason: err.message.message,
+            input_account: req.body.account,
+            input_password: req.body.password
+        }))
     }
 };
