@@ -15,7 +15,7 @@ async function destroyLocationPostmark(locationPostmarkID) {
                         location_postmark_id: locationPostmarkID
                     },
                     {
-                        status_code: 200
+                        status_code: 204
                     }
                 ]
             })
@@ -57,7 +57,7 @@ async function modifyLocationPostmark(payload) {
                         }
                     },
                     {
-                        status_code: 200
+                        status_code: 201
                     }
                 ]
             })

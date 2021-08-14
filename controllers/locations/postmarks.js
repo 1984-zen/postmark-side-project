@@ -10,10 +10,8 @@ async function showLocationPostmarkList(req, res, next) {
         const [message, status_code] = await hasLocation.then(hasLocation => {
             if (hasLocation === false) {
                 throw {
-                    message: {
-                        message: "this location id does not exist",
-                    },
-                    status_code: 400
+                    message: "this location id does not exist",
+                    status_code: 422
                 }
             }
             return getLocationPostmarkList(hasLocation.dataValues.id)
@@ -31,14 +29,22 @@ async function showLocationPostmarkList(req, res, next) {
         res.status(status_code.status_code)
         res.json({
             status: "get location postmarks list successfully",
-            result: message
+            result: {
+                message: "get location postmarks list successfully",
+                datas: message
+            }
         })
     } catch (err) {
         const statusCode = err.status_code;
         res.status(statusCode)
         res.json({
             status: "get location postmarks list failed",
-            result: err.message
+            result: {
+                message: err.message,
+                datas: [],
+                // test: err,
+                // dev: err.stack
+            }
         })
     }
 }
@@ -49,14 +55,22 @@ async function showLocationPostmarkIntroduce(req, res, next) {
         res.status(status_code.status_code)
         res.json({
             status: "get location postmark introduce successfully",
-            result: message
+            result: {
+                message: "get location postmark introduce successfully",
+                datas: message
+            }
         })
     } catch (err) {
         const statusCode = err.status_code;
         res.status(statusCode)
         res.json({
             status: "get location postmark introduce failed",
-            result: err.message
+            result: {
+                message: err.message,
+                datas: [],
+                // test: err,
+                // dev: err.stack
+            }
         })
     }
 }

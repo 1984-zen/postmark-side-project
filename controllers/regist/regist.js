@@ -15,21 +15,21 @@ module.exports = async function (req, res, next) {
                 message: {
                     message: "please fill account or password",
                 },
-                status_code: 400
+                status_code: 422
             }
         } else if (payload.name === undefined) {
             throw {
                 message: {
                     message: "please fill name",
                 },
-                status_code: 400
+                status_code: 422
             }
         } else if (payload.password !== payload.rePassword) {
             throw {
                 message: {
                     message: "enter the password differently",
                 },
-                status_code: 400
+                status_code: 422
             }
         }
         const checkEmailRegexp = emailRegexp.test(payload.account)
@@ -38,7 +38,7 @@ module.exports = async function (req, res, next) {
                 message: {
                     message: "account formate incorrectly, should be email formate",
                 },
-                status_code: 400
+                status_code: 422
             }
         }
         const hasAccount = await checkAccount(payload)
@@ -47,7 +47,7 @@ module.exports = async function (req, res, next) {
                 message: {
                     message: "this account has been registed",
                 },
-                status_code: 400
+                status_code: 422
             }
         }
         let hashPassword = crypto.createHash('sha1');
@@ -59,16 +59,22 @@ module.exports = async function (req, res, next) {
         res.status(status_code.status_code)
         res.json({
             status: "regist successfuly",
-            result: message
+            result: {
+                message: "regist successfuly",
+                datas: message
+            }
         })
     } catch (err) {
         const statusCode = err.status_code;
         res.status(statusCode)
         res.json({
             status: "regist failed",
-            result: err.message,
-            // test: err,
-            // dev: err.stack
+            result: {
+                message: err.message,
+                datas: [],
+                // test: err,
+                // dev: err.stack
+            }
         })
     }
 }

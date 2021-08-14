@@ -7,14 +7,22 @@ async function showHotCities(req, res, next) {
         res.status(statusCode)
         res.json({
             status: "get hot cities successfully",
-            result: cities
+            result: {
+                message: "get hot cities successfully",
+                datas: cities
+            }
         })
     } catch (err) {
         const statusCode = err.status_code;
         res.status(statusCode)
         res.json({
             status: "get hot cities failed",
-            result: err.message
+            result: {
+                message: err.message,
+                datas: [],
+                // test: err,
+                // dev: err.stack
+            }
         })
     }
 }

@@ -15,7 +15,7 @@ async function destroyCity(cityID) {
                         city_id: cityID
                     },
                     {
-                        status_code: 200
+                        status_code: 204
                     }
                 ]
             })
@@ -50,7 +50,7 @@ async function modifyCity(payload) {
                         }
                     },
                     {
-                        status_code: 200
+                        status_code: 201
                     }
                 ]
             })
@@ -136,14 +136,14 @@ async function getCities() {
         })
             .then((cities) => {
                 let obj = {};
-                obj['status_code'] = 200;
+                obj.status_code = 200;
                 cities.push(obj)
                 return cities;
             })
             .catch((err) => {
-                let obj = new Error("ORM error");
+                let obj = new Error("ORM error: controllers -> showCities; models -> getCities");
                 obj.status_code = 500;
-                obj.err = err.message;
+                obj.sequelizeErr = err.message;
                 throw obj;
             })
         return cities;

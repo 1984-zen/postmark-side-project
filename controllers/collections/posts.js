@@ -10,7 +10,7 @@ async function updatePostCollectonStatus(req, res, next) {
         }
         if (payload.postID === undefined || payload.cityID === undefined || payload.locationID === undefined) {
             let obj = new Error("please fill userID or postID or locationID");
-            obj.status_code = 500;
+            obj.status_code = 422;
             throw obj;
         } else {
             const updateResult = await modifyPostCollectonStatus(payload);
@@ -18,7 +18,10 @@ async function updatePostCollectonStatus(req, res, next) {
             res.status(statusCode)
             res.json({
                 status: "update post collection successfully",
-                result: updateResult
+                result: {
+                    message: "update post collection successfully",
+                    datas: updateResult
+                }
             })
         }
     } catch (err) {
@@ -26,9 +29,12 @@ async function updatePostCollectonStatus(req, res, next) {
         res.status(statusCode)
         res.json({
             status: "update post collection failed",
-            result: err.message,
-            test: err,
-            dev: err.stack
+            result: {
+                message: err.message,
+                datas: [],
+                // test: err,
+                // dev: err.stack
+            }
         })
     }
 }

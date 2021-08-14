@@ -50,7 +50,7 @@ async function destroyPost(postID) {
                         post_id: postID
                     },
                     {
-                        status_code: 200
+                        status_code: 204
                     }
                 ]
             })
@@ -82,7 +82,7 @@ async function modifyPost(payload) {
                             imprintDate: payload.imprintDate
                         },
                         {
-                            status_code: 200
+                            status_code: 201
                         }
                     ]
                 
@@ -109,7 +109,7 @@ async function getPost(postID) {
                 message: {
                     message: "this post id does not exist",
                 },
-                status_code: 400
+                status_code: 422
             }
         }
         const post = await Posts.findAll({

@@ -8,16 +8,22 @@ async function showCollectionCountsFromCities(req, res, next) {
         res.status(statusCode)
         res.json({
             status: "count this user has collected posts from cities successfully",
-            result: collectionCountsFromCities
+            result: {
+                message: "count this user has collected posts from cities successfully",
+                datas: collectionCountsFromCities
+            }
         })
     } catch (err) {
         const statusCode = err.status_code;
         res.status(statusCode)
         res.json({
             status: "count this user has collected posts from cities failed",
-            result: err.message,
-            test: err,
-            dev: err.stack
+            result: {
+                message: "count this user has collected posts from cities failed",
+                datas: err.message,
+                    // test: err,
+                    // dev: err.stack
+            }
         })
     }
 }

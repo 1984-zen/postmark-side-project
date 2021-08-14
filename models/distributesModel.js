@@ -15,7 +15,7 @@ async function destroyDistribute(payload) {
                         city_id: payload.distributeID
                     },
                     {
-                        status_code: 200
+                        status_code: 204
                     }
                 ]
             })
@@ -46,7 +46,7 @@ async function modifyDistribute(payload) {
                         }
                     },
                     {
-                        status_code: 200
+                        status_code: 201
                     }
                 ]
             })

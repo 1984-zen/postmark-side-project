@@ -16,7 +16,7 @@ async function destroyTown(townID) {
                         town_id: townID
                     },
                     {
-                        status_code: 200
+                        status_code: 204
                     }
                 ]
             })
@@ -49,7 +49,7 @@ async function modifyTown(payload) {
                         }
                     },
                     {
-                        status_code: 200
+                        status_code: 201
                     }
                 ]
             })

@@ -8,26 +8,30 @@ async function deleteCityByAdmin(req, res, next) {
         const hasCityID = await checkCityID(cityID)
         if (hasCityID === false) {
             throw {
-                message: {
-                    message: "this city id does not exist",
-                },
-                status_code: 400
+                message: "this city id does not exist",
+                status_code: 422
             }
         }
         const [message, status_code] = await destroyCity(cityID);
         res.status(status_code.status_code)
         res.json({
             status: "delete city successfuly",
-            result: message
+            result: {
+                message: "delete city successfuly",
+                datas: message
+            }
         })
     } catch (err) {
         const statusCode = err.status_code;
         res.status(statusCode)
         res.json({
             status: "delete city failed",
-            result: err.message,
-            test: err,
-            dev: err.stack
+            result: {
+                message: err.message,
+                datas: [],
+                // test: err,
+                // dev: err.stack
+            }
         })
     }
 }
@@ -45,35 +49,37 @@ async function updateCityByAdmin(req, res, next) {
         const hasDistributeID = await checkDistributeID(payload)
         if (hasDistributeID === false) {
             throw {
-                message: {
-                    message: "this distribute id does not exist",
-                },
-                status_code: 400
+                message: "this distribute id does not exist",
+                status_code: 422
             }
         }
         const hasCityID = await checkCityID(payload.cityID)
         if (hasCityID === false) {
             throw {
-                message: {
-                    message: "this city id does not exist",
-                },
-                status_code: 400
+                message: "this city id does not exist",
+                status_code: 422
             }
         }
         const [message, status_code] = await modifyCity(payload)
         res.status(status_code.status_code)
         res.json({
             status: "update city successfuly",
-            result: message
+            result: {
+                message: "update city successfuly",
+                datas: message
+            }
         })
     } catch (err) {
         const statusCode = err.status_code;
         res.status(statusCode)
         res.json({
             status: "update city failed",
-            result: err.message,
-            test: err,
-            dev: err.stack
+            result: {
+                message: err.message,
+                datas: [],
+                // test: err,
+                // dev: err.stack
+            }
         })
     }
 }
@@ -101,35 +107,37 @@ async function createCityByAdmin(req, res, next) {
         }
         if (payload.cityName === undefined || payload.distributeID === undefined) {
             throw {
-                message: {
-                    message: "please fill cityName or distributeID",
-                },
-                status_code: 400
+                message: "please fill cityName or distributeID",
+                status_code: 422
             }
         }
         const hasDistributeID = await checkDistributeID(payload)
         if (hasDistributeID === false) {
             throw {
-                message: {
-                    message: "this distribute id does not exist",
-                },
-                status_code: 400
+                message: "this distribute id does not exist",
+                status_code: 422
             }
         }
         const [message, status_code] = await createCity(payload);
         res.status(status_code.status_code)
         res.json({
             status: "create city successfuly",
-            result: message
+            result: {
+                message: "create city successfuly",
+                datas: message
+            }
         })
     } catch (err) {
         const statusCode = err.status_code;
         res.status(statusCode)
         res.json({
             status: "create city failed",
-            result: err.message,
-            // test: err,
-            // dev: err.stack
+            result: {
+                message: err.message,
+                datas: [],
+                // test: err,
+                // dev: err.stack
+            }
         })
     }
 }

@@ -7,9 +7,7 @@ async function showLocationIntroduce(req, res, next) {
         const locationDatas = await checkLocationID(locationID);
         if (locationDatas === false) {
             throw {
-                message: {
-                    message: "this location id does not exist",
-                },
+                message: "this location id does not exist",
                 status_code: 400
             }
         }
@@ -17,14 +15,20 @@ async function showLocationIntroduce(req, res, next) {
         res.status(status_code.status_code)
         res.json({
             status: "get location introduce successfully",
-            result: message
+            result: {
+                message: "get location introduce successfully",
+                datas: message
+            }
         })
     } catch (err) {
         const statusCode = err.status_code;
         res.status(statusCode)
         res.json({
             status: "get location introduce failed",
-            result: err.message
+            result: {
+                message: err.message,
+                datas: []
+            }
         })
     }
 }
@@ -36,14 +40,20 @@ async function showLocations(req, res, next) {
         res.status(statusCode)
         res.json({
             status: "get all locations successfully",
-            result: locations
+            result: {
+                message: "get all locations successfully",
+                datas: locations
+            }
         })
     } catch (err) {
         res.json({
             status: "get all locations failed",
-            result: err.message,
-            // test: err,
-            // dev: err.stack
+            result: {
+                message: err.message,
+                datas: [],
+                // test: err,
+                // dev: err.stack
+            }
         })
         const statusCode = err.status_code;
         res.status(statusCode)

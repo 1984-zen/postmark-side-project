@@ -93,7 +93,7 @@ async function modifyProfile(payload) {
                         message: "nothing changed"
                     },
                     {
-                        status_code: 200
+                        status_code: 201
                     }
                 ]
             } else {
@@ -200,7 +200,7 @@ async function checkLogin(payload) {
                         datas: result
                     },
                     {
-                        status_code: 200
+                        status_code: 201
                     }
                 ]
             })

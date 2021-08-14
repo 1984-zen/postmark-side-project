@@ -7,3 +7,4 @@ public/.DS_Store
 models/logs/debug.txt
 models/logs/error.txt
 models/logs/info.txt
+google_compute_engine.gpg

@@ -1,6 +1,5 @@
 const { Collections, Cities, Locations, Location_postmarks, Posts, User_postmarks, sequelize } = require('../connection_db');
 const Sequelize = require('sequelize');
-const { checkLocationID } = require('./locationsModel');
 const { onTime } = require('./onTimeModel');
 
 async function checkPostCollection(payload) {
@@ -39,7 +38,7 @@ async function modifyPostCollectonStatus(payload) {
             })
                 .then((addCollection) => {
                     let obj = {};
-                    obj['status_code'] = 200;
+                    obj['status_code'] = 201;
                     obj['collectedPostID'] = addCollection.dataValues.id;
                     obj['message'] = 'collected this post successfully';
                     return obj;
@@ -58,7 +57,7 @@ async function modifyPostCollectonStatus(payload) {
             })
                 .then((removeCollection) => {
                     let obj = {};
-                    obj['status_code'] = 200;
+                    obj['status_code'] = 204;
                     obj['collectedPostID'] = hasCollected.id;
                     obj['message'] = 'remove this post collection successfully';
                     return obj;
@@ -77,11 +76,8 @@ async function modifyPostCollectonStatus(payload) {
     }
 }
 async function getCollectionPostsFromLocation(userID, locationID) {
+    Posts.hasMany(User_postmarks, { foreignKey: 'post_id' }) // 測試 new Error("內容")
     try {
-        const locationDatas = await checkLocationID(locationID);
-        if (locationDatas === false) {
-            throw new Error("please enter the correct location id");
-        }
         const posts = await Collections.findAll({
             where: {
                 user_id: userID,
@@ -103,15 +99,14 @@ async function getCollectionPostsFromLocation(userID, locationID) {
         })
             .then((posts) => {
                 let obj = {};
-                obj['status_code'] = 200;
+                obj.status_code= 200;
                 posts.push(obj)
                 return posts;
             })
             .catch((err) => {
-                console.log(err)
-                let obj = new Error("ORM error");
+                let obj = new Error("ORM error: controllers -> showCollectionPostsFromLocation; models -> getCollectionPostsFromLocation"); // obj.message
                 obj.status_code = 500;
-                obj.err = err;
+                obj.sequelizeErr = err.message;
                 throw obj;
             })
         return posts;
@@ -135,7 +130,7 @@ async function getCollectionCountsFromLocations(userID) {
             group: ['Collections.locationId']
         })
             .then((collectionCountsResult) => {
-                results['collectionCountsResult'] = collectionCountsResult;
+                results.collectionCountsResult = collectionCountsResult;
             })
             .catch((err) => {
                 let obj = new Error("ORM error");
@@ -153,20 +148,20 @@ async function getCollectionCountsFromLocations(userID) {
                 on: {
                     post_id: sequelize.where(sequelize.col("Collections.postId"),
                         "=",
-                        sequelize.col("User_postmarks.postId"))
+                        sequelize.col("User_postmarks.post_id"))
                 },
                 attributes: ['postmark_img'], //若不Select欄位就不顯示，但一定要有空值，才不會預設去找主key
                 require: false
             }],
         })
             .then(async (collectionImageResult) => {
-                results['collectionImageResult'] = collectionImageResult;
-                results['status_code'] = 200;
+                results.collectionImageResult= collectionImageResult;
+                results.status_code = 200;
             })
             .catch((err) => {
-                let obj = new Error("ORM error");
+                let obj = new Error("ORM error: controllers -> showCollectionCountsFromLocations; models -> getCollectionCountsFromLocations");
                 obj.status_code = 500;
-                obj.err = err;
+                obj.sequelizeErr = err.message;
                 throw obj;
             })
         return results;
@@ -193,14 +188,14 @@ async function getCollectionCountsFromCities(userID) {
         })
             .then((collectionCountsResult) => {
                 let obj = {};
-                obj['status_code'] = 200;
+                obj.status_code = 200;
                 collectionCountsResult.push(obj)
                 return collectionCountsResult;
             })
             .catch((err) => {
-                let obj = new Error("ORM error");
+                let obj = new Error("ORM error: controllers -> showCollectionCountsFromCities; models -> getCollectionCountsFromCities");
                 obj.status_code = 500;
-                obj.err = err;
+                obj.sequelizeErr = err.message;
                 throw obj;
             })
         return collectionCountsResult;

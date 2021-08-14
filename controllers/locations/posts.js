@@ -10,24 +10,30 @@ async function showLocationPosts(req, res, next) {
         const haslocation = await checkLocationID(locationID)
         if (haslocation === false) {
             throw {
-                message: {
-                    message: "this location id does not exist",
-                },
-                status_code: 400
+                message: "this location id does not exist",
+                status_code: 422
             }
         }
         const [message, status_code] = await getLocationPosts(locationID);
         res.status(status_code.status_code)
         res.json({
             status: "get posts from location successfully",
-            result: message
+            result: {
+                message: "get posts from location successfully",
+                datas: message
+            }
         })
     } catch (err) {
         const statusCode = err.status_code;
         res.status(statusCode)
         res.json({
             status: "get posts from location failed",
-            result: err.message
+            result: {
+                message: err.message,
+                datas: []
+                // test: err,
+                // dev: err.stack
+            }
         })
         console.log(err.stack)
     }

@@ -43,12 +43,20 @@ async function createPost(req, res, next) {
         res.status(status_code.status_code)
         res.json({
             status: "create post successfully",
-            result: message
+            result: {
+                message: "create post successfully",
+                datas: message
+            }
         });
     } catch(err) {
         res.json({
             status: "create post failed",
-            result: err.message
+            result: {
+                message: err.message,
+                datas: [],
+                // test: err,
+                // dev: err.stack
+            }
         })
         const statusCode = err.status_code;
         res.status(statusCode)
@@ -63,12 +71,20 @@ async function deletePost(req, res, next) {
         res.status(statusCode)
         res.json({
             status: "delete post successfully",
-            result: message
+            result: {
+                message: "delete post successfully",
+                datas: message
+            }
         })
     } catch (err) {
         res.json({
             status: "delete post failed",
-            result: err.message,
+            result: {
+                message: err.message,
+                datas: [],
+                // test: err,
+                // dev: err.stack
+            }
         })
         const statusCode = err.status_code;
         res.status(statusCode)
@@ -90,10 +106,8 @@ async function updatePost(req, res, next) {
             const hasLocation = await checkLocationID(payload.locationID)
             if(hasLocation === false){
                 throw {
-                    message: {
-                        message: "this location id does not exist",
-                    },
-                    status_code: 400
+                    message: "this location id does not exist",
+                    status_code: 422
                 }
             }
         }
@@ -102,12 +116,20 @@ async function updatePost(req, res, next) {
         res.status(statusCode)
         res.json({
             status: "update post successfully",
-            result: message
+            result: {
+                message: "update post successfully",
+                datas: message
+            }
         })
     } catch (err) {
         res.json({
             status: "update post failed",
-            result: err.message,
+            result: {
+                message: err.message,
+                datas: [],
+                // test: err,
+                // dev: err.stack
+            }
         })
         const statusCode = err.status_code;
         res.status(statusCode)
@@ -121,7 +143,10 @@ async function showPost(req, res, next) {
         res.status(status_code.status_code)
         res.json({
             status: "get post successfully",
-            result: post
+            result: {
+                message: "get post successfully",
+                datas: post
+            }
         })
         console.log(err.stack)
     } catch (err) {
@@ -129,7 +154,12 @@ async function showPost(req, res, next) {
         res.status(statusCode)
         res.json({
             status: "get post failed",
-            result: err.message,
+            result: {
+                message: err.message,
+                datas: [],
+                // test: err,
+                // dev: err.stack
+            }
         })
     }
 }

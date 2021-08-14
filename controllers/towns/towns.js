@@ -8,14 +8,20 @@ async function showTowns(req, res, next) {
         res.status(statusCode)
         res.json({
             status: "get all towns successfully",
-            result: towns
+            result: {
+                message: "get all towns successfully",
+                datas: towns
+            }
         })
     } catch (err) {
         res.json({
             status: "get all towns failed",
-            result: err.message,
-            test: err,
-            dev: err.stack
+            result: {
+                message: err.message,
+                datas: [],
+                // test: err,
+                // dev: err.stack
+            }
         })
         statusCode = err.status_code;
         res.status(statusCode)

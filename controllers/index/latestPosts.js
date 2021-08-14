@@ -7,13 +7,21 @@ async function showLatestPosts(req, res, next) {
         res.status(statusCode)
         res.json({
             status: "get latest 9 posts successfully",
-            result: result
+            result: {
+                message: "get latest 9 posts successfully",
+                datas: result
+            }
         })
     } catch (err) {
         res.status(err.status_code)
         res.json({
             status: "get latest 9 posts failed",
-            result: err.message
+            result: {
+                message: "get latest 9 posts failed",
+                datas: err.message,
+                // test: err,
+                // dev: err.stack
+            }
         })
     }
 }

@@ -8,26 +8,30 @@ async function deleteLocationPostmarkByAdmin(req, res, next) {
         const hasLocationPostmarkID = await checkLocationPostmarkID(locationPostmarkID)
         if (hasLocationPostmarkID === false) {
             throw {
-                message: {
-                    message: "this location postmark id does not exist",
-                },
-                status_code: 400
+                message: "this location postmark id does not exist",
+                status_code: 422
             }
         }
         const [message, status_code] = await destroyLocationPostmark(locationPostmarkID);
         res.status(status_code.status_code)
         res.json({
             status: "delete location postmark successfuly",
-            result: message
+            result: {
+                message: "delete location postmark successfuly",
+                datas: message
+            }
         })
     } catch (err) {
         const statusCode = err.status_code;
         res.status(statusCode)
         res.json({
             status: "delete location postmark failed",
-            result: err.message,
-            test: err,
-            dev: err.stack
+            result: {
+                message: err.message,
+                datas: [],
+                // test: err,
+                // dev: err.stack
+            }
         })
     }
 }
@@ -49,35 +53,37 @@ async function updateLocationPostmarkByAdmin(req, res, next) {
         const hasLocationID = await checkLocationID(payload.locationID)
         if (hasLocationID === false) {
             throw {
-                message: {
-                    message: "this location id does not exist",
-                },
-                status_code: 400
+                message: "this location id does not exist",
+                status_code: 422
             }
         }
         const hasLocationPostmarkID = await checkLocationPostmarkID(payload.locationPostmarkID)
         if (hasLocationPostmarkID === false) {
             throw {
-                message: {
-                    message: "this location postmark id does not exist",
-                },
-                status_code: 400
+                message: "this location postmark id does not exist",
+                status_code: 422
             }
         }
         const [message, status_code] = await modifyLocationPostmark(payload)
         res.status(status_code.status_code)
         res.json({
             status: "update location postmark successfuly",
-            result: message
+            result: {
+                message: "update location postmark successfuly",
+                datas: message
+            }
         })
     } catch (err) {
         const statusCode = err.status_code;
         res.status(statusCode)
         res.json({
             status: "update location postmark failed",
-            result: err.message,
-            test: err,
-            dev: err.stack
+            result: {
+                message: err.message,
+                datas: [],
+                // test: err,
+                // dev: err.stack
+            }
         })
     }
 }
@@ -98,10 +104,8 @@ async function createLocationPostmarkByAdmin(req, res, next) {
         const locationPostmarkImgPath = checkLocationPostmarkImgPath(req.file)
         if (locationPostmarkImgPath === false) {
             throw {
-                message: {
-                    message: "please upload location postmark photo",
-                },
-                status_code: 400
+                message: "please upload location postmark photo",
+                status_code: 422
             }
         }
         let payload = {
@@ -115,35 +119,37 @@ async function createLocationPostmarkByAdmin(req, res, next) {
         }
         if (payload.startDate === undefined || payload.locationID === undefined) {
             throw {
-                message: {
-                    message: "please fill startDate or locationID",
-                },
-                status_code: 400
+                message: "please fill startDate or locationID",
+                status_code: 422
             }
         }
         const hasLocationID = await checkLocationID(payload.locationID)
         if (hasLocationID === false) {
             throw {
-                message: {
-                    message: "this location id does not exist",
-                },
-                status_code: 400
+                message: "this location id does not exist",
+                status_code: 422
             }
         }
         const [message, status_code] = await careateLocationPostmark(payload);
         res.status(status_code.status_code)
         res.json({
             status: "create location postmark successfuly",
-            result: message
+            result: {
+                message: "create location postmark successfuly",
+                datas: message
+            }
         })
     } catch (err) {
         const statusCode = err.status_code;
         res.status(statusCode)
         res.json({
             status: "create location postmark failed",
-            result: err.message,
-            test: err,
-            dev: err.stack
+            result: {
+                message: err.message,
+                datas: [],
+                // test: err,
+                // dev: err.stack
+            }
         })
     }
 }

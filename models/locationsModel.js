@@ -16,7 +16,7 @@ async function destroyLocation(locationID) {
                         location_id: locationID
                     },
                     {
-                        status_code: 200
+                        status_code: 204
                     }
                 ]
             })
@@ -54,7 +54,7 @@ async function modifyLocation(payload) {
                         }
                     },
                     {
-                        status_code: 200
+                        status_code: 201
                     }
                 ]
             })

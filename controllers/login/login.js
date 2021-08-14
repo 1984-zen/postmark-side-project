@@ -11,10 +11,8 @@ module.exports = async function (req, res, next) {
         };
         if (payload.account === undefined || payload.password === undefined) {
             throw {
-                message: {
-                    message: "please fill up account or password"
-                },
-                status_code: 400
+                message: "please fill up account or password",
+                status_code: 422
             }
         }
         //hash password
@@ -29,7 +27,7 @@ module.exports = async function (req, res, next) {
                 message: {
                     message: "account or password incorrected"
                 },
-                status_code: 400
+                status_code: 401
 
             }
         }
@@ -50,14 +48,22 @@ module.exports = async function (req, res, next) {
         res.status(status_code.status_code)
         res.json({
             status: "login successfully",
-            result: message,
+            result: {
+                message: "login successfully",
+                datas: message,
+            }
         });
     } catch (err) {
         const statusCode = err.status_code;
         res.status(statusCode)
         res.json({
             status: "login failed",
-            result: err.message,
+            result: {
+                message: err.message,
+                datas: [],
+                // test: err,
+                // dev: err.stack
+            }
         });
         logger.err(JSON.stringify({
             status_code: err.status_code,

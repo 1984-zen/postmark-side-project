@@ -27,17 +27,23 @@ async function updateProfile(req, res, next) {
         res.status(status_code.status_code)
         res.json({
             status: "modify user profile successfully",
-            result: message
+            result: {
+                message: "modify user profile successfully",
+                datas: message
+            }
         });
     } catch (err) {
         res.json({
             status: "modify user profile failed",
-            result: err.message,
-            dev: err.stack
+            result: {
+                message: err.message,
+                datas: [],
+                // test: err,
+                // dev: err.stack
+            }
         })
         const statusCode = err.status_code;
         res.status(statusCode)
-        console.log(err.stack)
     }
 }
 async function showProfile(req, res, next) {
@@ -47,12 +53,20 @@ async function showProfile(req, res, next) {
         res.status(status_code.status_code)
         res.json({
             status: "get user profile successfully",
-            result: message
+            result: {
+                message: "get user profile successfully",
+                datas: message
+            }
         });
     } catch (err) {
         res.json({
             status: "get user profile failed",
-            result: err.message,
+            result: {
+                message: err.message,
+                datas: [],
+                // test: err,
+                // dev: err.stack
+            }
         })
         const statusCode = err.status_code;
         res.status(statusCode)

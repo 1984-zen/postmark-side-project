@@ -12,13 +12,13 @@ async function verifyPostAuth(req, res, next) {
                 if (!hasDatas) {
                     const errDatas = {
                         errMessage: "this post id does not exsit",
-                        status_code: 400
+                        status_code: 422
                     }
                     throw errDatas;
                 } else if (hasDatas.dataValues.user_id !== req.user.id) {
                     let errDatas = {
                         errMessage: "this user has no authorization with this post",
-                        status_code: 401
+                        status_code: 403
                     }
                     throw errDatas;
                 }
